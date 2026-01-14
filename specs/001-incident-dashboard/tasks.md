@@ -20,15 +20,15 @@
 
 **Purpose**: Project initialization, dependencies, and base configuration
 
-- [ ] T001 Install MUI dependencies: @mui/material, @mui/icons-material, @emotion/react, @emotion/styled
-- [ ] T002 Install data management dependencies: material-react-table@^3, @tanstack/react-query@^5, @tanstack/react-form
-- [ ] T003 Install routing and utility dependencies: react-router-dom@^6, dayjs
-- [ ] T004 Create MUI theme with DanskeBank brand colors in src/theme/index.ts
-- [ ] T005 [P] Create src/components/common/ directory structure
-- [ ] T006 [P] Create src/components/incidents/ directory structure
-- [ ] T007 [P] Create src/components/layout/ directory structure
-- [ ] T008 [P] Create src/hooks/ directory structure
-- [ ] T009 [P] Create src/services/ directory structure
+- [x] T001 Install MUI dependencies: @mui/material, @mui/icons-material, @emotion/react, @emotion/styled
+- [x] T002 Install data management dependencies: material-react-table@^3, @tanstack/react-query@^5, @tanstack/react-form
+- [x] T003 Install routing and utility dependencies: react-router-dom@^6, dayjs
+- [x] T004 Create MUI theme with DanskeBank brand colors in src/theme/index.ts
+- [x] T005 [P] Create src/components/common/ directory structure
+- [x] T006 [P] Create src/components/incidents/ directory structure
+- [x] T007 [P] Create src/components/layout/ directory structure
+- [x] T008 [P] Create src/hooks/ directory structure
+- [x] T009 [P] Create src/services/ directory structure
 
 ---
 
@@ -40,40 +40,40 @@
 
 ### 2.1 Provider Setup (No Tests - Configuration Only)
 
-- [ ] T010 Configure QueryClient provider in src/main.tsx with TanStack Query
-- [ ] T011 Configure BrowserRouter provider in src/main.tsx with React Router
-- [ ] T012 Configure ThemeProvider and CssBaseline in src/main.tsx with MUI theme
+- [x] T010 Configure QueryClient provider in src/main.tsx with TanStack Query
+- [x] T011 Configure BrowserRouter provider in src/main.tsx with React Router
+- [x] T012 Configure ThemeProvider and CssBaseline in src/main.tsx with MUI theme
 
 ### 2.2 Services (TDD)
 
-- [ ] T013 [TEST] Write tests for incidentService API calls in src/services/incidentService.test.ts
-- [ ] T014 Create API service layer for incidents in src/services/incidentService.ts
-- [ ] T015 [TEST] Write tests for userService API calls in src/services/userService.test.ts
-- [ ] T016 Create API service layer for users in src/services/userService.ts
+- [x] T013 [TEST] Write tests for incidentService API calls in src/services/incidentService.test.ts
+- [x] T014 Create API service layer for incidents in src/services/incidentService.ts
+- [x] T015 [TEST] Write tests for userService API calls in src/services/userService.test.ts
+- [x] T016 Create API service layer for users in src/services/userService.ts
 
 ### 2.3 Hooks (TDD)
 
-- [ ] T017 [TEST] Write tests for useIncidents hook in src/hooks/useIncidents.test.ts
-- [ ] T018 Create useIncidents hook with TanStack Query in src/hooks/useIncidents.ts
-- [ ] T019 [TEST] Write tests for useUsers hook in src/hooks/useUsers.test.ts
-- [ ] T020 Create useUsers hook with TanStack Query in src/hooks/useUsers.ts
-- [ ] T021 [TEST] Write tests for useCreateIncident mutation in src/hooks/useIncidents.test.ts
-- [ ] T022 Create useCreateIncident mutation hook in src/hooks/useIncidents.ts
-- [ ] T023 [TEST] Write tests for useUpdateIncident mutation in src/hooks/useIncidents.test.ts
-- [ ] T024 Create useUpdateIncident mutation hook in src/hooks/useIncidents.ts
+- [x] T017 [TEST] Write tests for useIncidents hook in src/hooks/useIncidents.test.ts
+- [x] T018 Create useIncidents hook with TanStack Query in src/hooks/useIncidents.ts
+- [x] T019 [TEST] Write tests for useUsers hook in src/hooks/useUsers.test.ts
+- [x] T020 Create useUsers hook with TanStack Query in src/hooks/useUsers.ts
+- [x] T021 [TEST] Write tests for useCreateIncident mutation in src/hooks/useIncidents.test.ts
+- [x] T022 Create useCreateIncident mutation hook in src/hooks/useIncidents.ts
+- [x] T023 [TEST] Write tests for useUpdateIncident mutation in src/hooks/useIncidents.test.ts
+- [x] T024 Create useUpdateIncident mutation hook in src/hooks/useIncidents.ts
 
 ### 2.4 Common Components (TDD)
 
-- [ ] T025 [P][TEST] Write tests for StatusChip in src/components/common/StatusChip.test.tsx
-- [ ] T026 [P] Create StatusChip component in src/components/common/StatusChip.tsx
-- [ ] T027 [P][TEST] Write tests for SeverityChip in src/components/common/SeverityChip.test.tsx
-- [ ] T028 [P] Create SeverityChip component in src/components/common/SeverityChip.tsx
+- [x] T025 [P][TEST] Write tests for StatusChip in src/components/common/StatusChip.test.tsx
+- [x] T026 [P] Create StatusChip component in src/components/common/StatusChip.tsx
+- [x] T027 [P][TEST] Write tests for SeverityChip in src/components/common/SeverityChip.test.tsx
+- [x] T028 [P] Create SeverityChip component in src/components/common/SeverityChip.tsx
 
 ### 2.5 Layout & Utilities
 
-- [ ] T029 [TEST] Write tests for AppLayout in src/components/layout/AppLayout.test.tsx
-- [ ] T030 Create AppLayout component with header in src/components/layout/AppLayout.tsx
-- [ ] T031 Setup dayjs with relativeTime plugin in src/utils/dateUtils.ts
+- [x] T029 [TEST] Write tests for AppLayout in src/components/layout/AppLayout.test.tsx
+- [x] T030 Create AppLayout component with header in src/components/layout/AppLayout.tsx
+- [x] T031 Setup dayjs with relativeTime plugin in src/utils/dateUtils.ts
 
 **Checkpoint**: Foundation ready - user story implementation can now begin
 
@@ -89,33 +89,33 @@
 
 ### 3.1 IncidentTable Component (TDD)
 
-- [ ] T032 [US1][TEST] Write tests for IncidentTable rendering incidents in src/components/incidents/IncidentTable.test.tsx
-- [ ] T033 [US1] Create IncidentTable component shell with MRT in src/components/incidents/IncidentTable.tsx
-- [ ] T034 [US1][TEST] Write tests for table columns (title, status, severity, assignee, date) in src/components/incidents/IncidentTable.test.tsx
-- [ ] T035 [US1] Configure MRT columns: title, status, severity, assignee, created date in src/components/incidents/IncidentTable.tsx
-- [ ] T036 [US1] Implement StatusChip rendering in table status column in src/components/incidents/IncidentTable.tsx
-- [ ] T037 [US1] Implement SeverityChip rendering in table severity column in src/components/incidents/IncidentTable.tsx
-- [ ] T038 [US1] Implement assignee name lookup from users in src/components/incidents/IncidentTable.tsx
-- [ ] T039 [US1] Implement relative date formatting for created date column in src/components/incidents/IncidentTable.tsx
+- [x] T032 [US1][TEST] Write tests for IncidentTable rendering incidents in src/components/incidents/IncidentTable.test.tsx
+- [x] T033 [US1] Create IncidentTable component shell with MRT in src/components/incidents/IncidentTable.tsx
+- [x] T034 [US1][TEST] Write tests for table columns (title, status, severity, assignee, date) in src/components/incidents/IncidentTable.test.tsx
+- [x] T035 [US1] Configure MRT columns: title, status, severity, assignee, created date in src/components/incidents/IncidentTable.tsx
+- [x] T036 [US1] Implement StatusChip rendering in table status column in src/components/incidents/IncidentTable.tsx
+- [x] T037 [US1] Implement SeverityChip rendering in table severity column in src/components/incidents/IncidentTable.tsx
+- [x] T038 [US1] Implement assignee name lookup from users in src/components/incidents/IncidentTable.tsx
+- [x] T039 [US1] Implement relative date formatting for created date column in src/components/incidents/IncidentTable.tsx
 
 ### 3.2 Pagination (TDD)
 
-- [ ] T040 [US1][TEST] Write tests for pagination controls in src/components/incidents/IncidentTable.test.tsx
-- [ ] T041 [US1] Configure MRT pagination with page size options (10, 20, 50, 100) in src/components/incidents/IncidentTable.tsx
+- [x] T040 [US1][TEST] Write tests for pagination controls in src/components/incidents/IncidentTable.test.tsx
+- [x] T041 [US1] Configure MRT pagination with page size options (10, 20, 50, 100) in src/components/incidents/IncidentTable.tsx
 
 ### 3.3 Loading & Empty States (TDD)
 
-- [ ] T042 [US1][TEST] Write tests for EmptyState component in src/components/common/EmptyState.test.tsx
-- [ ] T043 [US1] Create EmptyState component for no incidents in src/components/common/EmptyState.tsx
-- [ ] T044 [US1][TEST] Write tests for LoadingState component in src/components/common/LoadingState.test.tsx
-- [ ] T045 [US1] Create LoadingState component with MUI CircularProgress in src/components/common/LoadingState.tsx
-- [ ] T046 [US1] Integrate loading and empty states into IncidentTable in src/components/incidents/IncidentTable.tsx
+- [x] T042 [US1][TEST] Write tests for EmptyState component in src/components/common/EmptyState.test.tsx
+- [x] T043 [US1] Create EmptyState component for no incidents in src/components/common/EmptyState.tsx
+- [x] T044 [US1][TEST] Write tests for LoadingState component in src/components/common/LoadingState.test.tsx
+- [x] T045 [US1] Create LoadingState component with MUI CircularProgress in src/components/common/LoadingState.tsx
+- [x] T046 [US1] Integrate loading and empty states into IncidentTable in src/components/incidents/IncidentTable.tsx
 
 ### 3.4 Page Integration
 
-- [ ] T047 [US1][TEST] Write tests for DashboardPage in src/components/incidents/DashboardPage.test.tsx
-- [ ] T048 [US1] Create DashboardPage component integrating IncidentTable in src/components/incidents/DashboardPage.tsx
-- [ ] T049 [US1] Wire DashboardPage route in App.tsx
+- [x] T047 [US1][TEST] Write tests for DashboardPage in src/components/incidents/DashboardPage.test.tsx
+- [x] T048 [US1] Create DashboardPage component integrating IncidentTable in src/components/incidents/DashboardPage.tsx
+- [x] T049 [US1] Wire DashboardPage route in App.tsx
 
 **Checkpoint**: User Story 1 complete - users can view paginated incident list
 
@@ -129,28 +129,28 @@
 
 ### 4.1 Search & Filters (TDD)
 
-- [ ] T050 [US2][TEST] Write tests for global title search in src/components/incidents/IncidentTable.test.tsx
-- [ ] T051 [US2] Enable MRT enableGlobalFilter for title search in src/components/incidents/IncidentTable.tsx
-- [ ] T052 [US2][TEST] Write tests for column filters in src/components/incidents/IncidentTable.test.tsx
-- [ ] T053 [US2] Enable MRT enableColumnFilters in src/components/incidents/IncidentTable.tsx
-- [ ] T054 [US2] Configure status column filter with select variant (Open/In Progress/Resolved) in src/components/incidents/IncidentTable.tsx
-- [ ] T055 [US2] Configure severity column filter with select variant (Low/Medium/High/Critical) in src/components/incidents/IncidentTable.tsx
-- [ ] T056 [US2] Configure assignee column filter with select variant (user list) in src/components/incidents/IncidentTable.tsx
+- [x] T050 [US2][TEST] Write tests for global title search in src/components/incidents/IncidentTable.test.tsx
+- [x] T051 [US2] Enable MRT enableGlobalFilter for title search in src/components/incidents/IncidentTable.tsx
+- [x] T052 [US2][TEST] Write tests for column filters in src/components/incidents/IncidentTable.test.tsx
+- [x] T053 [US2] Enable MRT enableColumnFilters in src/components/incidents/IncidentTable.tsx
+- [x] T054 [US2] Configure status column filter with select variant (Open/In Progress/Resolved) in src/components/incidents/IncidentTable.tsx
+- [x] T055 [US2] Configure severity column filter with select variant (Low/Medium/High/Critical) in src/components/incidents/IncidentTable.tsx
+- [x] T056 [US2] Configure assignee column filter with select variant (user list) in src/components/incidents/IncidentTable.tsx
 
 ### 4.2 Sorting (TDD)
 
-- [ ] T057 [US2][TEST] Write tests for sorting functionality in src/components/incidents/IncidentTable.test.tsx
-- [ ] T058 [US2] Enable MRT enableSorting for all columns in src/components/incidents/IncidentTable.tsx
-- [ ] T059 [US2] Configure custom severity sorting by priority order (Critical > High > Medium > Low) in src/components/incidents/IncidentTable.tsx
+- [x] T057 [US2][TEST] Write tests for sorting functionality in src/components/incidents/IncidentTable.test.tsx
+- [x] T058 [US2] Enable MRT enableSorting for all columns in src/components/incidents/IncidentTable.tsx
+- [x] T059 [US2] Configure custom severity sorting by priority order (Critical > High > Medium > Low) in src/components/incidents/IncidentTable.tsx
 
 ### 4.3 URL State & Clear Filters
 
-- [ ] T060 [US2][TEST] Write tests for URL filter synchronization in src/components/incidents/IncidentTable.test.tsx
-- [ ] T061 [US2] Sync filter state to URL query params using React Router in src/components/incidents/IncidentTable.tsx
-- [ ] T062 [US2] Restore filters from URL params on page load in src/components/incidents/IncidentTable.tsx
-- [ ] T063 [US2][TEST] Write tests for NoFilterResults component in src/components/common/NoFilterResults.test.tsx
-- [ ] T064 [US2] Create NoFilterResults component for empty filter results in src/components/common/NoFilterResults.tsx
-- [ ] T065 [US2] Add clear filters button when filters active in src/components/incidents/IncidentTable.tsx
+- [x] T060 [US2][TEST] Write tests for URL filter synchronization in src/components/incidents/IncidentTable.test.tsx
+- [x] T061 [US2] Sync filter state to URL query params using React Router in src/components/incidents/IncidentTable.tsx
+- [x] T062 [US2] Restore filters from URL params on page load in src/components/incidents/IncidentTable.tsx
+- [x] T063 [US2][TEST] Write tests for NoFilterResults component in src/components/common/NoFilterResults.test.tsx
+- [x] T064 [US2] Create NoFilterResults component for empty filter results in src/components/common/NoFilterResults.tsx
+- [x] T065 [US2] Add clear filters button when filters active in src/components/incidents/IncidentTable.tsx
 
 **Checkpoint**: User Story 2 complete - users can filter, search, and sort incidents
 
@@ -164,28 +164,28 @@
 
 ### 5.1 Detail Panel (TDD)
 
-- [ ] T066 [US3][TEST] Write tests for IncidentDetailPanel in src/components/incidents/IncidentDetailPanel.test.tsx
-- [ ] T067 [US3] Create IncidentDetailPanel component shell in src/components/incidents/IncidentDetailPanel.tsx
-- [ ] T068 [US3] Enable MRT renderDetailPanel for row expansion in src/components/incidents/IncidentTable.tsx
-- [ ] T069 [US3] Display full title and description in detail panel in src/components/incidents/IncidentDetailPanel.tsx
-- [ ] T070 [US3] Display status and severity with chips in detail panel in src/components/incidents/IncidentDetailPanel.tsx
-- [ ] T071 [US3] Display assignee name (or "Unassigned") in detail panel in src/components/incidents/IncidentDetailPanel.tsx
-- [ ] T072 [US3] Display formatted createdAt and updatedAt timestamps in detail panel in src/components/incidents/IncidentDetailPanel.tsx
+- [x] T066 [US3][TEST] Write tests for IncidentDetailPanel in src/components/incidents/IncidentDetailPanel.test.tsx
+- [x] T067 [US3] Create IncidentDetailPanel component shell in src/components/incidents/IncidentDetailPanel.tsx
+- [x] T068 [US3] Enable MRT renderDetailPanel for row expansion in src/components/incidents/IncidentTable.tsx
+- [x] T069 [US3] Display full title and description in detail panel in src/components/incidents/IncidentDetailPanel.tsx
+- [x] T070 [US3] Display status and severity with chips in detail panel in src/components/incidents/IncidentDetailPanel.tsx
+- [x] T071 [US3] Display assignee name (or "Unassigned") in detail panel in src/components/incidents/IncidentDetailPanel.tsx
+- [x] T072 [US3] Display formatted createdAt and updatedAt timestamps in detail panel in src/components/incidents/IncidentDetailPanel.tsx
 
 ### 5.2 Status History (TDD)
 
-- [ ] T073 [US3][TEST] Write tests for StatusHistoryTimeline in src/components/incidents/StatusHistoryTimeline.test.tsx
-- [ ] T074 [US3] Create StatusHistoryTimeline component in src/components/incidents/StatusHistoryTimeline.tsx
-- [ ] T075 [US3] Display status history entries with user name lookup in src/components/incidents/StatusHistoryTimeline.tsx
+- [x] T073 [US3][TEST] Write tests for StatusHistoryTimeline in src/components/incidents/StatusHistoryTimeline.test.tsx
+- [x] T074 [US3] Create StatusHistoryTimeline component in src/components/incidents/StatusHistoryTimeline.tsx
+- [x] T075 [US3] Display status history entries with user name lookup in src/components/incidents/StatusHistoryTimeline.tsx
 
 ### 5.3 Panel Behavior & Deep Linking
 
-- [ ] T076 [US3][TEST] Write tests for single panel open behavior in src/components/incidents/IncidentTable.test.tsx
-- [ ] T077 [US3] Configure only one detail panel open at a time in src/components/incidents/IncidentTable.tsx
-- [ ] T078 [US3][TEST] Write tests for deep linking to incident in src/components/incidents/DashboardPage.test.tsx
-- [ ] T079 [US3] Add deep link support: /incidents/:id opens that row's panel in src/components/incidents/DashboardPage.tsx
-- [ ] T080 [US3] Update URL when detail panel opens/closes in src/components/incidents/IncidentTable.tsx
-- [ ] T081 [US3] Preserve filter state when returning from detail view in src/components/incidents/IncidentTable.tsx
+- [x] T076 [US3][TEST] Write tests for single panel open behavior in src/components/incidents/IncidentTable.test.tsx
+- [x] T077 [US3] Configure only one detail panel open at a time in src/components/incidents/IncidentTable.tsx
+- [x] T078 [US3][TEST] Write tests for deep linking to incident in src/components/incidents/DashboardPage.test.tsx
+- [x] T079 [US3] Add deep link support: /incidents/:id opens that row's panel in src/components/incidents/DashboardPage.tsx
+- [x] T080 [US3] Update URL when detail panel opens/closes in src/components/incidents/IncidentTable.tsx
+- [x] T081 [US3] Preserve filter state when returning from detail view in src/components/incidents/IncidentTable.tsx
 
 **Checkpoint**: User Story 3 complete - users can view full incident details with history
 
