@@ -4,13 +4,16 @@ import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import type { SvgIconProps } from '@mui/material/SvgIcon';
 import type { IncidentStatus } from '../../api/types';
+import { statusColors } from '../../theme';
 
 /**
  * Configuration for a single status option
  */
 interface StatusConfig {
   /** Hex color code for chip background */
-  color: string;
+  backgroundColor: string;
+  /** Hex color code for chip text */
+  textColor: string;
   /** MUI icon component to display in chip */
   icon: React.ComponentType<SvgIconProps>;
   /** Display label */
@@ -18,23 +21,26 @@ interface StatusConfig {
 }
 
 /**
- * Status configuration map with blue spectrum colors and workflow icons.
- * Blue colors represent workflow progression (neutral, not urgency).
+ * Status configuration map with Danske Bank brand colors and workflow icons.
+ * Blue→Gold→Green progression represents workflow state.
  * Icons provide visual differentiation for color-blind users (FR-017).
  */
 export const STATUS_CONFIG: Record<IncidentStatus, StatusConfig> = {
   Open: {
-    color: '#42A5F5',
+    backgroundColor: statusColors.open.background,
+    textColor: statusColors.open.text,
     icon: RadioButtonUncheckedIcon,
     label: 'Open',
   },
   'In Progress': {
-    color: '#1E88E5',
+    backgroundColor: statusColors.inProgress.background,
+    textColor: statusColors.inProgress.text,
     icon: PlayArrowIcon,
     label: 'In Progress',
   },
   Resolved: {
-    color: '#1565C0',
+    backgroundColor: statusColors.resolved.background,
+    textColor: statusColors.resolved.text,
     icon: CheckCircleIcon,
     label: 'Resolved',
   },
@@ -56,10 +62,10 @@ export function StatusChip({ status, size = 'small' }: StatusChipProps) {
       size={size}
       aria-label={`Status: ${status}`}
       sx={{
-        backgroundColor: config.color,
-        color: '#FFFFFF',
+        backgroundColor: config.backgroundColor,
+        color: config.textColor,
         '& .MuiChip-icon': {
-          color: '#FFFFFF',
+          color: config.textColor,
         },
       }}
     />

@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { SeverityChip, SEVERITY_CONFIG } from './SeverityChip';
+import { severityColors } from '../../theme';
 
 describe('SeverityChip', () => {
   describe('label rendering', () => {
@@ -39,47 +40,58 @@ describe('SeverityChip', () => {
     });
   });
 
-  describe('urgency color scheme (FR-016)', () => {
-    it('displays Low severity with green background (#4CAF50)', () => {
+  describe('Danske Bank brand urgency color scheme (FR-016)', () => {
+    // #144a37 → rgb(20, 74, 55)
+    it('displays Low severity with green background (#144a37)', () => {
       render(<SeverityChip severity="Low" />);
       const chip = screen.getByText('Low').closest('.MuiChip-root');
-      expect(chip).toHaveStyle({ backgroundColor: 'rgb(76, 175, 80)' });
+      expect(chip).toHaveStyle({ backgroundColor: 'rgb(20, 74, 55)' });
     });
 
-    it('displays Medium severity with blue background (#2196F3)', () => {
+    // #d8b463 → rgb(216, 180, 99)
+    it('displays Medium severity with gold background (#d8b463)', () => {
       render(<SeverityChip severity="Medium" />);
       const chip = screen.getByText('Medium').closest('.MuiChip-root');
-      expect(chip).toHaveStyle({ backgroundColor: 'rgb(33, 150, 243)' });
+      expect(chip).toHaveStyle({ backgroundColor: 'rgb(216, 180, 99)' });
     });
 
-    it('displays High severity with orange background (#FF9800)', () => {
+    // #cd6e42 → rgb(205, 110, 66)
+    it('displays High severity with orange background (#cd6e42)', () => {
       render(<SeverityChip severity="High" />);
       const chip = screen.getByText('High').closest('.MuiChip-root');
-      expect(chip).toHaveStyle({ backgroundColor: 'rgb(255, 152, 0)' });
+      expect(chip).toHaveStyle({ backgroundColor: 'rgb(205, 110, 66)' });
     });
 
-    it('displays Critical severity with red background (#F44336)', () => {
+    // #7d3218 → rgb(125, 50, 24)
+    it('displays Critical severity with dark red background (#7d3218)', () => {
       render(<SeverityChip severity="Critical" />);
       const chip = screen.getByText('Critical').closest('.MuiChip-root');
-      expect(chip).toHaveStyle({ backgroundColor: 'rgb(244, 67, 54)' });
+      expect(chip).toHaveStyle({ backgroundColor: 'rgb(125, 50, 24)' });
     });
 
-    it('displays white text color for contrast', () => {
+    it('displays white text color for High severity', () => {
       render(<SeverityChip severity="High" />);
       const chip = screen.getByText('High').closest('.MuiChip-root');
       expect(chip).toHaveStyle({ color: 'rgb(255, 255, 255)' });
     });
+
+    // Medium uses dark text on gold background for contrast
+    // #002346 → rgb(0, 35, 70)
+    it('displays dark text color for Medium severity', () => {
+      render(<SeverityChip severity="Medium" />);
+      const chip = screen.getByText('Medium').closest('.MuiChip-root');
+      expect(chip).toHaveStyle({ color: 'rgb(0, 35, 70)' });
+    });
   });
 
   describe('visual distinction from status chips (FR-014)', () => {
-    it('does not use blue colors (reserved for status)', () => {
+    it('does not use blue status colors', () => {
       // High severity should be orange, not blue
       render(<SeverityChip severity="High" />);
       const chip = screen.getByText('High').closest('.MuiChip-root');
-      // Should NOT be blue (#42A5F5, #1E88E5, #1565C0)
-      expect(chip).not.toHaveStyle({ backgroundColor: 'rgb(66, 165, 245)' });
-      expect(chip).not.toHaveStyle({ backgroundColor: 'rgb(30, 136, 229)' });
-      expect(chip).not.toHaveStyle({ backgroundColor: 'rgb(21, 101, 192)' });
+      // Should NOT be the status blue colors
+      expect(chip).not.toHaveStyle({ backgroundColor: 'rgb(70, 114, 194)' });
+      expect(chip).not.toHaveStyle({ backgroundColor: 'rgb(216, 180, 99)' }); // gold is for in progress
     });
 
     it('severity chips do not have icons (unlike status chips)', () => {
@@ -106,11 +118,19 @@ describe('SeverityChip', () => {
       expect(SEVERITY_CONFIG.Critical).toBeDefined();
     });
 
-    it('each severity config has color and label', () => {
+    it('each severity config has backgroundColor, textColor, and label', () => {
       Object.values(SEVERITY_CONFIG).forEach((config) => {
-        expect(config).toHaveProperty('color');
+        expect(config).toHaveProperty('backgroundColor');
+        expect(config).toHaveProperty('textColor');
         expect(config).toHaveProperty('label');
       });
+    });
+
+    it('uses theme severity colors', () => {
+      expect(SEVERITY_CONFIG.Low.backgroundColor).toBe(severityColors.low.background);
+      expect(SEVERITY_CONFIG.Medium.backgroundColor).toBe(severityColors.medium.background);
+      expect(SEVERITY_CONFIG.High.backgroundColor).toBe(severityColors.high.background);
+      expect(SEVERITY_CONFIG.Critical.backgroundColor).toBe(severityColors.critical.background);
     });
   });
 });

@@ -5,7 +5,7 @@ import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
-import ReportProblemIcon from '@mui/icons-material/ReportProblem';
+import danskeBankLogo from '../../assets/danske-bank-logo.svg';
 
 interface AppLayoutProps {
   children: React.ReactNode;
@@ -13,20 +13,27 @@ interface AppLayoutProps {
 
 export function AppLayout({ children }: AppLayoutProps) {
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  // Use md breakpoint (960px) for navigation collapse as per spec
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
       <AppBar position="static" component="header">
         <Toolbar sx={{ minHeight: { xs: 56, sm: 64 } }}>
-          <ReportProblemIcon sx={{ mr: { xs: 1, sm: 2 }, fontSize: { xs: 20, sm: 24 } }} />
-          <Typography
-            variant={isMobile ? 'subtitle1' : 'h6'}
-            component="h1"
-            sx={{ flexGrow: 1 }}
-          >
-            Incident Dashboard
-          </Typography>
+          <Box
+            component="img"
+            src={danskeBankLogo}
+            alt="Danske Bank"
+            sx={{
+              height: { xs: 24, sm: 32 },
+              mr: 2,
+            }}
+          />
+          {!isMobile && (
+            <Typography variant="body1" component="span" sx={{ flexGrow: 1 }}>
+              Incident Dashboard
+            </Typography>
+          )}
         </Toolbar>
       </AppBar>
       <Container
