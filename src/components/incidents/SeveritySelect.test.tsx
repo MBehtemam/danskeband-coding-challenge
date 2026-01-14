@@ -27,10 +27,11 @@ describe('SeveritySelect', () => {
       const select = screen.getByRole('combobox', { name: /severity/i });
       await user.click(select);
 
-      expect(screen.getByRole('option', { name: 'Low' })).toBeInTheDocument();
-      expect(screen.getByRole('option', { name: 'Medium' })).toBeInTheDocument();
-      expect(screen.getByRole('option', { name: 'High' })).toBeInTheDocument();
-      expect(screen.getByRole('option', { name: 'Critical' })).toBeInTheDocument();
+      // Options have chips with aria-labels like "Severity: Low"
+      expect(screen.getByRole('option', { name: /low/i })).toBeInTheDocument();
+      expect(screen.getByRole('option', { name: /medium/i })).toBeInTheDocument();
+      expect(screen.getByRole('option', { name: /high/i })).toBeInTheDocument();
+      expect(screen.getByRole('option', { name: /critical/i })).toBeInTheDocument();
     });
 
     it('exports SEVERITY_OPTIONS constant with all options', () => {
@@ -47,7 +48,8 @@ describe('SeveritySelect', () => {
       const select = screen.getByRole('combobox', { name: /severity/i });
       await user.click(select);
 
-      const criticalOption = screen.getByRole('option', { name: 'Critical' });
+      // Options have chips with aria-labels like "Severity: Critical"
+      const criticalOption = screen.getByRole('option', { name: /critical/i });
       await user.click(criticalOption);
 
       expect(onChange).toHaveBeenCalledWith('Critical');
@@ -61,7 +63,8 @@ describe('SeveritySelect', () => {
       const select = screen.getByRole('combobox', { name: /severity/i });
       await user.click(select);
 
-      const lowOption = screen.getByRole('option', { name: 'Low' });
+      // Options have chips with aria-labels like "Severity: Low"
+      const lowOption = screen.getByRole('option', { name: /low/i });
       await user.click(lowOption);
 
       expect(onChange).toHaveBeenCalledWith('Low');

@@ -2,6 +2,7 @@ import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import Select, { type SelectChangeEvent } from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
+import { SeverityChip } from '../common/SeverityChip';
 import type { IncidentSeverity } from '../../api/types';
 
 /**
@@ -24,15 +25,18 @@ interface SeveritySelectProps {
 
   /** Whether the select is disabled (e.g., during save) */
   disabled?: boolean;
+
+  /** Whether the select should take full width of its container */
+  fullWidth?: boolean;
 }
 
-export function SeveritySelect({ value, onChange, disabled }: SeveritySelectProps) {
+export function SeveritySelect({ value, onChange, disabled, fullWidth = false }: SeveritySelectProps) {
   const handleChange = (event: SelectChangeEvent) => {
     onChange(event.target.value as IncidentSeverity);
   };
 
   return (
-    <FormControl size="small" sx={{ minWidth: 140 }}>
+    <FormControl size="small" fullWidth={fullWidth} sx={{ minWidth: fullWidth ? undefined : 140 }}>
       <InputLabel id="severity-select-label">Severity</InputLabel>
       <Select
         labelId="severity-select-label"
@@ -43,10 +47,11 @@ export function SeveritySelect({ value, onChange, disabled }: SeveritySelectProp
         disabled={disabled}
         aria-label="Severity"
         sx={{ minHeight: 44 }}
+        renderValue={(selected) => <SeverityChip severity={selected as IncidentSeverity} size="small" />}
       >
         {SEVERITY_OPTIONS.map((s) => (
           <MenuItem key={s} value={s} sx={{ minHeight: 44 }}>
-            {s}
+            <SeverityChip severity={s} size="small" />
           </MenuItem>
         ))}
       </Select>

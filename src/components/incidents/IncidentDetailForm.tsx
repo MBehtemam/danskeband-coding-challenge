@@ -15,6 +15,8 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { SeveritySelect } from './SeveritySelect';
 import { StatusHistoryTimeline } from './StatusHistoryTimeline';
 import { SaveButton } from '../common/SaveButton';
+import { CopyButton } from '../common/CopyButton';
+import { StatusChip } from '../common/StatusChip';
 import { formatDateTime } from '../../utils/dateUtils';
 import type { Incident, User, IncidentStatus, IncidentSeverity } from '../../api/types';
 import type { IncidentFormValues } from '../../types/form';
@@ -92,14 +94,16 @@ export function IncidentDetailForm({
       <Box sx={{ flex: 1, overflowY: 'auto', p: { xs: 2, sm: 3 } }}>
         {/* Section 1: Header */}
         <Box sx={{ mb: 2 }}>
-          {/* Incident ID - subtle but accessible */}
-          <Typography
-            variant="caption"
-            color="text.secondary"
-            sx={{ display: 'block', mb: 0.5 }}
-          >
-            ID: {incident.id}
-          </Typography>
+          {/* Incident ID - subtle but accessible with copy button */}
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, mb: 0.5 }}>
+            <Typography
+              variant="caption"
+              color="text.secondary"
+            >
+              ID: {incident.id}
+            </Typography>
+            <CopyButton text={incident.id} label="Copy incident ID" size="small" />
+          </Box>
 
           {/* Title - prominent */}
           <Typography variant="h6" component="h2" gutterBottom>
@@ -114,69 +118,63 @@ export function IncidentDetailForm({
 
         <Divider sx={{ my: 2 }} />
 
-        {/* Section 2: Editable Fields */}
+        {/* Section 2: Editable Fields - Vertical layout for better touch targets */}
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, mb: 2 }}>
           <Typography variant="subtitle2">Details</Typography>
-          <Box
-            sx={{
-              display: 'flex',
-              gap: 2,
-              flexWrap: 'wrap',
-              alignItems: 'flex-end',
-            }}
-          >
-            {/* Status Select */}
-            <FormControl size="small" sx={{ minWidth: 140 }}>
-              <InputLabel id="status-select-label">Status</InputLabel>
-              <Select
-                labelId="status-select-label"
-                id="status-select"
-                value={formValues.status}
-                label="Status"
-                onChange={handleStatusChange}
-                disabled={isSaving}
-                aria-label="Status"
-                sx={{ minHeight: 44 }}
-              >
-                {STATUSES.map((s) => (
-                  <MenuItem key={s} value={s} sx={{ minHeight: 44 }}>
-                    {s}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
 
-            {/* Severity Select */}
-            <SeveritySelect
-              value={formValues.severity}
-              onChange={onSeverityChange}
+          {/* Status Select - Full width with chip display */}
+          <FormControl size="small" fullWidth>
+            <InputLabel id="status-select-label">Status</InputLabel>
+            <Select
+              labelId="status-select-label"
+              id="status-select"
+              value={formValues.status}
+              label="Status"
+              onChange={handleStatusChange}
               disabled={isSaving}
-            />
-
-            {/* Assignee Select */}
-            <FormControl size="small" sx={{ minWidth: 160 }}>
-              <InputLabel id="assignee-select-label">Assignee</InputLabel>
-              <Select
-                labelId="assignee-select-label"
-                id="assignee-select"
-                value={formValues.assigneeId ?? ''}
-                label="Assignee"
-                onChange={handleAssigneeChange}
-                disabled={isSaving}
-                aria-label="Assignee"
-                sx={{ minHeight: 44 }}
-              >
-                <MenuItem value="" sx={{ minHeight: 44 }}>
-                  <em>Unassigned</em>
+              aria-label="Status"
+              sx={{ minHeight: 44 }}
+              renderValue={(selected) => <StatusChip status={selected as IncidentStatus} size="small" />}
+            >
+              {STATUSES.map((s) => (
+                <MenuItem key={s} value={s} sx={{ minHeight: 44 }}>
+                  <StatusChip status={s} size="small" />
                 </MenuItem>
-                {users.map((user) => (
-                  <MenuItem key={user.id} value={user.id} sx={{ minHeight: 44 }}>
-                    {user.name}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          </Box>
+              ))}
+            </Select>
+          </FormControl>
+
+          {/* Severity Select - Full width */}
+          <SeveritySelect
+            value={formValues.severity}
+            onChange={onSeverityChange}
+            disabled={isSaving}
+            fullWidth
+          />
+
+          {/* Assignee Select - Full width */}
+          <FormControl size="small" fullWidth>
+            <InputLabel id="assignee-select-label">Assignee</InputLabel>
+            <Select
+              labelId="assignee-select-label"
+              id="assignee-select"
+              value={formValues.assigneeId ?? ''}
+              label="Assignee"
+              onChange={handleAssigneeChange}
+              disabled={isSaving}
+              aria-label="Assignee"
+              sx={{ minHeight: 44 }}
+            >
+              <MenuItem value="" sx={{ minHeight: 44 }}>
+                <em>Unassigned</em>
+              </MenuItem>
+              {users.map((user) => (
+                <MenuItem key={user.id} value={user.id} sx={{ minHeight: 44 }}>
+                  {user.name}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
         </Box>
 
         <Divider sx={{ my: 2 }} />

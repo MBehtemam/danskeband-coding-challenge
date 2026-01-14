@@ -139,7 +139,8 @@ describe('IncidentDetailForm', () => {
       const statusSelect = screen.getByRole('combobox', { name: /status/i });
       await user.click(statusSelect);
 
-      const inProgressOption = screen.getByRole('option', { name: 'In Progress' });
+      // Options now have chip aria-labels like "Status: In Progress"
+      const inProgressOption = screen.getByRole('option', { name: /in progress/i });
       await user.click(inProgressOption);
 
       expect(onStatusChange).toHaveBeenCalledWith('In Progress');
@@ -182,7 +183,7 @@ describe('IncidentDetailForm', () => {
       const severitySelect = screen.getByRole('combobox', { name: /severity/i });
       await user.click(severitySelect);
 
-      const criticalOption = screen.getByRole('option', { name: 'Critical' });
+      const criticalOption = screen.getByRole('option', { name: /critical/i });
       await user.click(criticalOption);
 
       expect(onSeverityChange).toHaveBeenCalledWith('Critical');
@@ -281,6 +282,53 @@ describe('IncidentDetailForm', () => {
       render(<IncidentDetailForm {...defaultProps} />, { wrapper: createWrapper() });
 
       expect(screen.getByText(/inc-1/)).toBeInTheDocument();
+    });
+
+    it('displays copy button next to incident ID (FR-001)', () => {
+      render(<IncidentDetailForm {...defaultProps} />, { wrapper: createWrapper() });
+
+      expect(screen.getByRole('button', { name: /copy incident id/i })).toBeInTheDocument();
+    });
+
+    it('displays dropdowns in vertical layout (FR-010)', () => {
+      render(<IncidentDetailForm {...defaultProps} />, { wrapper: createWrapper() });
+
+      // All three dropdowns should be present
+      expect(screen.getByRole('combobox', { name: /status/i })).toBeInTheDocument();
+      expect(screen.getByRole('combobox', { name: /severity/i })).toBeInTheDocument();
+      expect(screen.getByRole('combobox', { name: /assignee/i })).toBeInTheDocument();
+    });
+
+    it('displays status chip in status dropdown (FR-012)', async () => {
+      const user = userEvent.setup();
+      render(<IncidentDetailForm {...defaultProps} />, { wrapper: createWrapper() });
+
+      // The status dropdown should show a chip for the current value
+      const statusSelect = screen.getByRole('combobox', { name: /status/i });
+      expect(statusSelect).toBeInTheDocument();
+
+      // Click to open dropdown and verify chips in menu
+      await user.click(statusSelect);
+
+      // Options should display as chips
+      const openOption = screen.getByRole('option', { name: /open/i });
+      expect(openOption).toBeInTheDocument();
+    });
+
+    it('displays severity chip in severity dropdown (FR-013)', async () => {
+      const user = userEvent.setup();
+      render(<IncidentDetailForm {...defaultProps} />, { wrapper: createWrapper() });
+
+      // The severity dropdown should show a chip
+      const severitySelect = screen.getByRole('combobox', { name: /severity/i });
+      expect(severitySelect).toBeInTheDocument();
+
+      // Click to open dropdown
+      await user.click(severitySelect);
+
+      // Options should display as chips
+      const highOption = screen.getByRole('option', { name: /high/i });
+      expect(highOption).toBeInTheDocument();
     });
 
     it('groups editable fields together with a section heading', () => {
