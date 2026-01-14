@@ -1,0 +1,355 @@
+openapi: 3.1.0
+info:
+  title: Team Incident Dashboard API
+  description: |
+    Mock API for the Team Incident Dashboard frontend application.
+    All endpoints are intercepted client-side by the mock API layer.
+  version: 1.0.0
+  contact:
+    name: DanskeBank Frontend Team
+
+servers:
+  - url: /api
+    description: Mock API (client-side intercepted)
+
+tags:
+  - name: Incidents
+    description: Incident management operations
+  - name: Users
+    description: User/team member operations
+  - name: System
+    description: System utilities
+
+paths:
+  /incidents:
+    get:
+      tags:
+        - Incidents
+      summary: List all incidents
+      description: Returns all incidents, newest first
+      operationId: getIncidents
+      responses:
+        '200':
+          description: List of incidents
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Incident'
+
+    post:
+      tags:
+        - Incidents
+      summary: Create a new incident
+      description: Creates a new incident with status "Open"
+      operationId: createIncident
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateIncidentInput'
+      responses:
+        '201':
+          description: Incident created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Incident'
+        '400':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                missingTitle:
+                  summary: Missing title
+                  value:
+                    error: "Title is required"
+                missingSeverity:
+                  summary: Missing severity
+                  value:
+                    error: "Severity is required"
+
+  /incidents/{id}:
+    parameters:
+      - $ref: '#/components/parameters/IncidentId'
+
+    get:
+      tags:
+        - Incidents
+      summary: Get incident by ID
+      description: Returns a single incident with full details
+      operationId: getIncidentById
+      responses:
+        '200':
+          description: Incident found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Incident'
+        '404':
+          description: Incident not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                error: "Incident with id \"inc-123\" not found"
+
+    patch:
+      tags:
+        - Incidents
+      summary: Update incident
+      description: |
+        Partially updates an incident. Status changes are automatically
+        recorded in the statusHistory array.
+      operationId: updateIncident
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateIncidentInput'
+      responses:
+        '200':
+          description: Incident updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Incident'
+        '404':
+          description: Incident not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    delete:
+      tags:
+        - Incidents
+      summary: Delete incident
+      description: Permanently removes an incident (out of scope for UI)
+      operationId: deleteIncident
+      responses:
+        '204':
+          description: Incident deleted successfully
+        '404':
+          description: Incident not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /users:
+    get:
+      tags:
+        - Users
+      summary: List all users
+      description: Returns all team members available for assignment
+      operationId: getUsers
+      responses:
+        '200':
+          description: List of users
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+
+  /reset:
+    post:
+      tags:
+        - System
+      summary: Reset data to defaults
+      description: Resets all data to seed values (for development/testing)
+      operationId: resetData
+      responses:
+        '200':
+          description: Data reset successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Data reset to defaults"
+
+components:
+  parameters:
+    IncidentId:
+      name: id
+      in: path
+      required: true
+      description: Unique incident identifier
+      schema:
+        type: string
+        example: "inc-1704067200000-abc123xyz"
+
+  schemas:
+    IncidentStatus:
+      type: string
+      enum:
+        - Open
+        - In Progress
+        - Resolved
+      description: Current workflow state of the incident
+
+    IncidentSeverity:
+      type: string
+      enum:
+        - Low
+        - Medium
+        - High
+        - Critical
+      description: Impact level classification
+
+    StatusHistoryEntry:
+      type: object
+      required:
+        - status
+        - changedAt
+        - changedBy
+      properties:
+        status:
+          $ref: '#/components/schemas/IncidentStatus'
+        changedAt:
+          type: string
+          format: date-time
+          description: ISO8601 timestamp of the status change
+          example: "2026-01-14T10:30:00.000Z"
+        changedBy:
+          type: string
+          description: Identifier of who/what made the change
+          example: "current-user"
+
+    Incident:
+      type: object
+      required:
+        - id
+        - title
+        - description
+        - status
+        - severity
+        - assigneeId
+        - createdAt
+        - updatedAt
+        - statusHistory
+      properties:
+        id:
+          type: string
+          description: Unique identifier
+          example: "inc-1704067200000-abc123xyz"
+        title:
+          type: string
+          maxLength: 200
+          description: Brief incident title
+          example: "Database connection timeout"
+        description:
+          type: string
+          description: Detailed description
+          example: "Users experiencing intermittent connection failures to primary database"
+        status:
+          $ref: '#/components/schemas/IncidentStatus'
+        severity:
+          $ref: '#/components/schemas/IncidentSeverity'
+        assigneeId:
+          type: string
+          nullable: true
+          description: Reference to assigned user ID
+          example: "usr-alice"
+        createdAt:
+          type: string
+          format: date-time
+          description: Creation timestamp
+          example: "2026-01-14T09:00:00.000Z"
+        updatedAt:
+          type: string
+          format: date-time
+          description: Last modification timestamp
+          example: "2026-01-14T10:30:00.000Z"
+        statusHistory:
+          type: array
+          items:
+            $ref: '#/components/schemas/StatusHistoryEntry'
+          description: Audit trail of status changes
+
+    User:
+      type: object
+      required:
+        - id
+        - name
+        - email
+      properties:
+        id:
+          type: string
+          description: Unique identifier
+          example: "usr-alice"
+        name:
+          type: string
+          description: Display name
+          example: "Alice Johnson"
+        email:
+          type: string
+          format: email
+          description: Email address
+          example: "alice@example.com"
+
+    CreateIncidentInput:
+      type: object
+      required:
+        - title
+        - severity
+      properties:
+        title:
+          type: string
+          minLength: 1
+          maxLength: 200
+          description: Incident title (required)
+          example: "New critical issue"
+        description:
+          type: string
+          description: Detailed description (optional)
+          example: "Detailed explanation of the issue"
+        severity:
+          $ref: '#/components/schemas/IncidentSeverity'
+        assigneeId:
+          type: string
+          nullable: true
+          description: User ID to assign (optional)
+          example: "usr-alice"
+
+    UpdateIncidentInput:
+      type: object
+      properties:
+        title:
+          type: string
+          minLength: 1
+          maxLength: 200
+          description: New title
+        description:
+          type: string
+          description: New description
+        status:
+          $ref: '#/components/schemas/IncidentStatus'
+        severity:
+          $ref: '#/components/schemas/IncidentSeverity'
+        assigneeId:
+          type: string
+          nullable: true
+          description: New assignee user ID
+      minProperties: 1
+
+    Error:
+      type: object
+      required:
+        - error
+      properties:
+        error:
+          type: string
+          description: Human-readable error message
+          example: "Title is required"
