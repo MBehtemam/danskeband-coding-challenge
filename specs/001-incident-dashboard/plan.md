@@ -1,41 +1,23 @@
 # Implementation Plan: Team Incident Dashboard
 
-**Branch**: `001-incident-dashboard` | **Date**: 2026-01-14 | **Spec**: [spec.md](./spec.md)
+**Branch**: `001-incident-dashboard` | **Date**: 2026-01-14 | **Spec**: [spec.md](spec.md)
 **Input**: Feature specification from `/specs/001-incident-dashboard/spec.md`
 
 ## Summary
 
-Build a production-quality incident management dashboard for DanskeBank operations team. The dashboard enables viewing, filtering, sorting, creating, and updating incidents with a focus on accessibility (WCAG 2.1 AA) and responsive design. Uses Material React Table for data display with detail panel editing, TanStack Query for server state, and React Router for URL-shareable views.
+Build a production-quality frontend application for an internal operations team to manage incidents. The dashboard enables viewing, filtering, creating, and updating incidents with full CRUD operations via a mock API. Technical approach uses Material UI + Material React Table for UI, TanStack Query for server state, TanStack Form for forms, and React Router for navigation.
 
 ## Technical Context
 
 **Language/Version**: TypeScript 5.6+ (strict mode enabled in tsconfig.json)
-**Framework**: React 18.3.1 + React DOM 18.3.1
-**Primary Dependencies**:
-- Material UI (MUI) v5/v6 - Component library
-- Material React Table (MRT) - Data table with detail panels
-- TanStack Query v5 - Server state management
-- TanStack Form - Form handling and validation
-- React Router v6 - URL routing for deep linking
-- dayjs - Date calculations and formatting (relative time, localization)
-
+**Primary Dependencies**: React 18.3.1, Material UI, Material React Table v3, TanStack Query v5, TanStack Form, React Router v6, dayjs
 **Storage**: LocalStorage (via existing Mock API layer)
-**Testing**: Vitest + React Testing Library (already configured)
-**Target Platform**: Modern evergreen browsers (desktop + mobile ≥320px)
-**Project Type**: Single-page web application
-**Performance Goals**:
-- Initial load: <3 seconds
-- Filter/sort response: <1 second
-- Detail view open: <1 second
-- Save operations: <2 seconds
-
-**Constraints**:
-- WCAG 2.1 AA accessibility compliance
-- Responsive design (320px to 1920px+)
-- Touch target minimum 44x44px on mobile
-- TDD workflow (tests before implementation)
-
-**Scale/Scope**: 500+ incidents with client-side pagination
+**Testing**: Vitest + React Testing Library (TDD required per constitution)
+**Target Platform**: Modern evergreen browsers (Chrome, Firefox, Safari, Edge)
+**Project Type**: Single frontend application
+**Performance Goals**: Initial load <3s, filter/sort response <1s, save operations <2s
+**Constraints**: Client-side pagination for 500+ incidents, WCAG 2.1 AA accessibility
+**Scale/Scope**: 500+ incidents, 4 seed users, 7 user stories, ~40 components
 
 ## Constitution Check
 
@@ -43,20 +25,11 @@ Build a production-quality incident management dashboard for DanskeBank operatio
 
 | Principle | Status | Notes |
 |-----------|--------|-------|
-| I. Test-First Development | ✅ PASS | Plan includes TDD workflow with Vitest + RTL |
-| II. TypeScript Strict Mode | ✅ PASS | tsconfig.json already has strict: true |
-| III. Code Quality Standards | ✅ PASS | ESLint 9+ and Prettier 3+ already configured |
-| IV. User Experience Excellence | ✅ PASS | Loading states, error handling, responsive design planned |
-| V. Accessibility (WCAG 2.1 AA) | ✅ PASS | MUI + MRT provide accessibility, keyboard nav required |
-
-**Technology Standards Check:**
-- ✅ Node.js 18+
-- ✅ React 18 with functional components and hooks
-- ✅ TypeScript 5.6+ with strict mode
-- ✅ Vite 6+ (already configured)
-- ✅ Vitest + React Testing Library (already configured)
-- ✅ ESLint 9+ with TypeScript plugin (already configured)
-- ✅ Prettier 3+ (already configured)
+| I. Test-First Development | ✓ Required | All tasks must include tests BEFORE implementation |
+| II. TypeScript Strict Mode | ✓ Enabled | tsconfig.json has strict: true |
+| III. Code Quality | ✓ Configured | ESLint + Prettier already set up |
+| IV. UX Excellence | ✓ Addressed | Loading states, error handling, optimistic updates planned |
+| V. Accessibility (WCAG 2.1 AA) | ✓ Planned | Keyboard nav, ARIA, semantic HTML in all components |
 
 ## Project Structure
 
@@ -64,132 +37,65 @@ Build a production-quality incident management dashboard for DanskeBank operatio
 
 ```text
 specs/001-incident-dashboard/
-├── spec.md              # Feature specification
 ├── plan.md              # This file
-├── research.md          # Phase 0 output - UX/tech research
-├── data-model.md        # Phase 1 output - Entity definitions
-├── quickstart.md        # Phase 1 output - Setup guide
-├── contracts/           # Phase 1 output - API contracts
-│   └── openapi.yaml     # OpenAPI 3.0 specification
-└── tasks.md             # Phase 2 output (via /speckit.tasks)
+├── research.md          # Technology decisions (MUI, MRT, TanStack)
+├── data-model.md        # Entity definitions (Incident, User, StatusHistory)
+├── quickstart.md        # Developer setup guide
+├── contracts/           # API specification
+│   └── openapi.yaml     # OpenAPI 3.1 spec for mock API
+└── tasks.md             # Implementation tasks with TDD
 ```
 
 ### Source Code (repository root)
 
 ```text
 src/
-├── api/                    # Existing Mock API (provided)
+├── api/                 # Mock API (existing)
 │   ├── index.ts
 │   ├── mockApi.ts
 │   ├── seedData.ts
 │   ├── storage.ts
 │   └── types.ts
-├── components/             # React components
-│   ├── common/             # Shared/reusable components
-│   │   ├── StatusChip.tsx
-│   │   ├── SeverityChip.tsx
-│   │   ├── LoadingSpinner.tsx
-│   │   └── ErrorMessage.tsx
-│   ├── incidents/          # Incident-specific components
-│   │   ├── IncidentTable.tsx
-│   │   ├── IncidentDetailPanel.tsx
-│   │   ├── IncidentFilters.tsx
-│   │   ├── CreateIncidentDrawer.tsx
-│   │   └── StatusHistory.tsx
-│   └── layout/             # Layout components
-│       └── DashboardLayout.tsx
-├── hooks/                  # Custom React hooks
-│   ├── useIncidents.ts     # TanStack Query hooks
-│   ├── useUsers.ts
-│   └── useUrlState.ts      # URL state sync
-├── types/                  # TypeScript type definitions
-│   └── index.ts            # Re-export from api/types.ts + UI types
-├── theme/                  # MUI theme configuration
-│   └── index.ts            # DanskeBank-aligned theme
-├── App.tsx                 # Main app with Router
-├── main.tsx                # Entry point
-└── routes.tsx              # React Router configuration
-
-tests/
-├── unit/                   # Unit tests
-│   └── components/
-├── integration/            # Integration tests
-│   └── incidents/
-└── setup.ts                # Test setup (existing)
+├── components/
+│   ├── common/          # Shared UI (StatusChip, SeverityChip, EmptyState, etc.)
+│   ├── incidents/       # Feature components (IncidentTable, DetailPanel, etc.)
+│   └── layout/          # AppLayout, Header
+├── hooks/               # TanStack Query hooks (useIncidents, useUsers, mutations)
+├── services/            # API client layer (incidentService, userService)
+├── theme/               # MUI theme with DanskeBank brand colors
+├── utils/               # Utilities (dateUtils with dayjs)
+├── App.tsx
+├── App.css
+└── main.tsx             # Providers: QueryClient, Router, Theme
 ```
 
-**Structure Decision**: Single-page application structure following React best practices. Components organized by feature (incidents) and type (common, layout). Existing API layer preserved as-is.
+**Structure Decision**: Single frontend project. Components organized by feature (incidents) with shared common components. Hooks and services separated for clean architecture. Tests collocated with source files (*.test.tsx).
 
-## UI/UX Decisions (User-Confirmed)
+## Architecture Decisions
 
-### Component Library & Styling
-- **UI Library**: Material UI (MUI)
-- **Table**: Material React Table (MRT)
-- **Styling**: MUI's `sx` prop + `styled()` API
-- **Forms**: TanStack Form for validation and handling
+### State Management
+- **Server State**: TanStack Query for caching, background refetch, optimistic updates
+- **UI State**: React useState for local component state (drawer open, edit mode)
+- **URL State**: React Router for filters, sort, and deep linking to incidents
 
-### Interaction Patterns
-- **Table View**: Read-only display with colored MUI Chips for status/severity
-- **Detail View**: MRT's built-in detail panel (one open at a time)
-- **Editing**: All edits happen in detail panel via MUI Select dropdowns
-- **No inline editing**: Prevents accidental changes, cleaner UX
-- **Create Form**: Side drawer panel slides in from right
-
-### Visual Design
-| Element | Display | Edit Mode |
-|---------|---------|-----------|
-| Status | Colored MUI Chip | MUI Select dropdown |
-| Severity | Colored MUI Chip | MUI Select dropdown |
-| Assignee | Text (user name) | MUI Select dropdown |
-| Title/Description | Text | Text fields |
-
-### Color Scheme
-**Severity Colors:**
-- Critical: `error` (red)
-- High: `warning` (orange)
-- Medium: `info` (blue)
-- Low: `success` (green)
-
-**Status Colors:**
-- Open: `info` (blue)
-- In Progress: `warning` (amber)
-- Resolved: `success` (green)
-
-### Routing & URL Sharing
-- **Router**: React Router v6
-- **URL Pattern**: `/incidents/:id` for detail view
-- **Deep Linking**: Users can share URLs that open specific incidents
-- **Filter State**: Persisted in URL query params (e.g., `?status=Open&severity=High`)
-
-### Pagination Strategy
-- **Approach**: Client-side pagination via MRT
-- **Rationale**: Mock API loads all data; MRT handles pagination UI
-- **Page Sizes**: 10, 20, 50, 100 options
-
-## Dependencies to Add
-
-```json
-{
-  "dependencies": {
-    "@mui/material": "^5.15.x or ^6.x",
-    "@mui/icons-material": "^5.15.x or ^6.x",
-    "@emotion/react": "^11.x",
-    "@emotion/styled": "^11.x",
-    "material-react-table": "^3.x",
-    "@tanstack/react-query": "^5.x",
-    "@tanstack/react-form": "^0.x",
-    "react-router-dom": "^6.x",
-    "dayjs": "^1.x"
-  }
-}
+### Data Flow
 ```
+User Action → Component → Hook (useMutation) → Service → Mock API → LocalStorage
+                                ↓
+                    TanStack Query Cache Invalidation
+                                ↓
+                    UI Re-render with fresh data
+```
+
+### Component Architecture
+- **IncidentTable**: MRT-based table with pagination, sorting, filtering, detail panels
+- **IncidentDetailPanel**: MRT renderDetailPanel for view/edit in-place
+- **CreateIncidentDrawer**: Side drawer with TanStack Form for new incidents
+- **Common Chips**: StatusChip, SeverityChip for consistent status/severity display
 
 ## Complexity Tracking
 
-> No constitution violations requiring justification.
-
-| Decision | Rationale | Simpler Alternative Considered |
-|----------|-----------|--------------------------------|
-| TanStack Query over Context | Better caching, loading states, error handling for API calls | React Context - would require manual cache management |
-| MRT over simple table | Built-in pagination, sorting, filtering, detail panels | HTML table - would require building all features manually |
-| React Router for deep linking | User requirement for shareable URLs | No router - would not meet URL sharing requirement |
+No constitution violations requiring justification. Architecture follows simplest approach:
+- Single project (no monorepo)
+- Client-side state only (no external state management library beyond TanStack Query)
+- Existing mock API (no backend changes needed)

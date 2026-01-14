@@ -276,10 +276,12 @@ const theme = createTheme({
 - Touch targets minimum 44x44px
 - All features usable on all devices
 
-**MRT Responsive Approach:**
-- Column hiding on smaller screens
-- Detail panel works on all sizes
-- Filters collapse into menu on mobile
+**MRT Responsive Approach (no card layout switch):**
+- Use `columnVisibility` state to hide less critical columns on mobile breakpoints
+- Use `density='compact'` on mobile for better space utilization
+- Detail panel works on all sizes (MRT handles this natively)
+- Toolbar filters collapse into MRT's built-in filter dropdown on mobile
+- MRT handles horizontal scrolling gracefully if needed
 
 **MUI Responsive Utilities:**
 - `useMediaQuery` for breakpoint detection

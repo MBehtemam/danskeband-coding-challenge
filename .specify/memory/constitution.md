@@ -74,7 +74,7 @@ The incident dashboard MUST prioritize user experience:
 - Loading states MUST provide feedback within 100ms of user action
 - Error states MUST be clear, actionable, and non-technical
 - Forms MUST validate inline and prevent invalid submissions
-- UI MUST be responsive across desktop and tablet viewports (≥768px)
+- UI MUST be responsive across all viewports from 320px (mobile) to 1920px+ (desktop)
 - Critical actions (delete, status change) MUST require confirmation
 - Data MUST persist correctly (localStorage) and survive page refreshes
 - State changes MUST be immediately visible without manual refresh
