@@ -1,0 +1,45 @@
+# Development files
+node_modules/
+
+# Test files and specs (not needed for production build)
+tests/
+specs/
+*.test.ts
+*.test.tsx
+
+# Configuration files
+.git/
+.github/
+.vscode/
+.idea/
+.DS_Store
+
+# Test and coverage
+coverage/
+
+# Build artifacts (Vercel will build fresh)
+dist/
+build/
+
+# Logs and temp files
+*.log
+*.tmp
+*.swp
+
+# Environment files (except example)
+.env*
+!.env.example
+
+# Documentation (not needed for deployment)
+README.md
+CLAUDE.md
+
+# Editor files
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Playwright MCP artifacts (not needed for deployment)
+.playwright-mcp/

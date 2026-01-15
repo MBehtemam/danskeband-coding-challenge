@@ -1,10 +1,14 @@
-import "./App.css";
+import { Routes, Route } from 'react-router-dom';
+import { DashboardPage } from './components/incidents/DashboardPage';
+import { DeveloperSettingsPage } from './pages/DeveloperSettingsPage';
 
 function App() {
   return (
-    <div className="app">
-      <h1>Team Incident Dashboard - Starter Project</h1>
-    </div>
+    <Routes>
+      <Route path="/" element={<DashboardPage />} />
+      <Route path="/incidents/:incidentId" element={<DashboardPage />} />
+      <Route path="/developer" element={<DeveloperSettingsPage />} />
+    </Routes>
   );
 }
 
