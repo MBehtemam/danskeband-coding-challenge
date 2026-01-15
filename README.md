@@ -37,6 +37,24 @@ npm test
 npm run build
 ```
 
+### Deployment
+
+Deploy to Vercel production:
+
+```bash
+npm run deploy
+```
+
+This command will:
+1. Run all tests (must pass)
+2. Run linting (must pass)
+3. Build the application
+4. Deploy to Vercel production URL
+
+**First-time setup**: The first deployment will prompt for authentication and project configuration. Subsequent deployments are fully automated.
+
+**For detailed deployment instructions**, see [specs/012-vercel-deployment/quickstart.md](specs/012-vercel-deployment/quickstart.md)
+
 ## Project Structure
 
 ```
@@ -56,6 +74,89 @@ src/
 ├── main.tsx
 └── vite-env.d.ts
 ```
+
+## Features
+
+The Team Incident Dashboard is a comprehensive incident management application with robust filtering, search, and data management capabilities. Built with modern web technologies, it provides a responsive, accessible interface for managing team incidents efficiently.
+
+### Core Capabilities
+
+| Category | Feature | Description |
+|----------|---------|-------------|
+| Data Management | Create Incident | Create new incidents with title, description, severity, and assignee |
+| Data Management | Update Incident | Edit incident details including status, severity, and assignee |
+| Data Management | View Incident Details | Display full incident information in side panel with status history |
+| Data Management | Delete Incident | Remove incidents from the system with confirmation |
+| Search & Filtering | Global Search | Full-text search across incident titles and descriptions |
+| Search & Filtering | Column Filters | Filter by status, severity, assignee, and created date |
+| Search & Filtering | Filter Modes | Advanced filtering with multiple operators (equals, not equals, date ranges) |
+| Search & Filtering | Clear Filters | Reset all active filters and search in one click |
+| Table Features | Column Sorting | Sort any column in ascending or descending order |
+| Table Features | Pagination | Navigate through incidents with configurable page sizes (10, 20, 50, 100) |
+| Table Features | Column Visibility | Show/hide columns via column selector |
+| Table Features | Table Density | Switch between compact and comfortable viewing modes |
+| Table Features | Row Selection | Click any row to open detail panel with keyboard support |
+| Saved Views | Create View | Save current table configuration (filters, sorting, columns, search) |
+| Saved Views | Load View | Restore previously saved table configuration |
+| Saved Views | Update View | Overwrite existing view with current configuration |
+| Saved Views | Rename View | Change saved view name with duplicate prevention |
+| Saved Views | Delete View | Remove saved view with confirmation |
+| Saved Views | Default View | Reset to application's initial state |
+| UI/UX | Dark/Light Theme | Toggle between light and dark color schemes with Danske Bank branding |
+| UI/UX | System Theme Detection | Automatically match user's OS theme preference |
+| UI/UX | Responsive Design | Optimized layouts for mobile (320px+), tablet (768px+), and desktop |
+| UI/UX | Detail Panel | Slide-out panel for viewing and editing incidents with status history |
+| UI/UX | Loading States | Visual feedback with skeleton loaders and progress indicators |
+| UI/UX | Empty States | Helpful guidance with contextual messages when no data exists |
+| UI/UX | Error Handling | User-friendly error messages with recovery options |
+| State Management | URL State Persistence | All filters, sorting, and search stored in shareable URL |
+| State Management | Shareable Links | Copy URL to share exact table state with team members |
+| State Management | Browser Navigation | Back/forward buttons work seamlessly with table state |
+
+### Saved Views
+
+**Saved Views** allow you to save your current table configuration and quickly switch between different views. When you save a view, it captures your active filters, sorting, column visibility, search query, and filter modes. This is particularly useful for common workflows like "My Open Incidents", "Critical Issues This Week", or "Unassigned Tickets". You can create unlimited views, update them as your needs change, rename them for clarity, and delete views you no longer need. The default view resets everything to the application's initial state.
+
+## Screenshots
+
+### Desktop Features
+
+**Main Table View**
+
+![Main incident table showing filters, sorting, and pagination](screenshots/01-desktop-main-table.png)
+*The main incident dashboard with comprehensive table features including filtering, sorting, and pagination controls.*
+
+**Dark Theme**
+
+![Application in dark mode with Danske Bank branding](screenshots/02-desktop-dark-theme.png)
+*Dark theme mode featuring Danske Bank's color scheme with excellent contrast and readability.*
+
+**Saved Views**
+
+![Saved views dropdown menu showing custom view management](screenshots/03-desktop-saved-views.png)
+*Saved Views feature allowing users to create, load, update, rename, and delete custom table configurations.*
+
+**Create Incident**
+
+![Create incident dialog with form fields](screenshots/04-desktop-create-incident.png)
+*Create incident dialog with comprehensive form validation and user-friendly controls.*
+
+**Detail Panel**
+
+![Incident detail panel with edit form and status history](screenshots/05-desktop-detail-panel.png)
+*Incident detail panel showing full incident information, edit capabilities, and status change history.*
+
+### Responsive Design
+
+**Tablet View**
+
+![Application on tablet showing responsive layout](screenshots/06-tablet-responsive.png)
+*Responsive tablet layout (768px) with optimized column visibility and touch-friendly controls.*
+
+**Mobile View**
+
+![Application on mobile showing compact layout](screenshots/07-mobile-responsive.png)
+*Mobile-optimized view (375px) featuring compact layout with essential information prioritized.*
 
 ## Mock API
 
