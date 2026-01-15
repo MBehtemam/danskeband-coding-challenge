@@ -4,6 +4,20 @@ A minimal React + TypeScript + Vite starter project for the coding challenge.
 
 > **Note**: This is a starter project for a coding challenge. See [candidate-brief.md](candidate-brief.md) for the full requirements and task description.
 
+## 🚀 Live Demo
+
+The application is deployed and publicly accessible on Vercel:
+
+**Production URL**: [https://danskeband-coding-challenge-19akydzzk-ehtemamdev-4721s-projects.vercel.app](https://danskeband-coding-challenge-19akydzzk-ehtemamdev-4721s-projects.vercel.app)
+
+This deployment includes all implemented features with full functionality:
+- Complete incident management (CRUD operations)
+- Advanced filtering and search
+- Saved views for custom table configurations
+- Dark/light theme switching
+- Responsive design for mobile, tablet, and desktop
+- Persistent data storage using localStorage
+
 ## Getting Started
 
 ### Prerequisites
