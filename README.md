@@ -256,3 +256,26 @@ interface User {
 - **Vite** - Build tool
 - **Vitest** - Testing
 - **React Testing Library** - Component testing
+
+## Development Process
+
+This project was developed using AI-assisted development with **[SpecKit](https://speckit.app/)**, a systematic approach to building software features through structured specification, planning, and implementation phases.
+
+### SpecKit Workflow
+
+Each feature in this project follows a rigorous development process:
+
+1. **Specification Phase** - Clear, testable requirements without implementation details
+2. **Planning Phase** - Technical design, architecture decisions, and file structure
+3. **Implementation Phase** - Automated task execution with comprehensive testing
+4. **Validation Phase** - Quality checks against success criteria
+
+All feature specifications, plans, and implementation tasks are documented in the `/specs` directory, providing full traceability from requirements to implementation.
+
+### AI Tools Used
+
+- **Claude Sonnet 4.5** - Primary development assistant via Claude Code CLI
+- **SpecKit Framework** - Structured development methodology
+- **Playwright** - Automated screenshot capture and browser testing
+
+This approach ensures consistent code quality, comprehensive documentation, and systematic feature delivery.
