@@ -3,6 +3,7 @@ import {
   fetchIncidents,
   createIncident,
   updateIncident,
+  deleteIncident,
 } from '../services/incidentService';
 import type { Incident, CreateIncidentInput, UpdateIncidentInput } from '../api/types';
 
@@ -43,6 +44,42 @@ export function useUpdateIncident() {
           old?.map((incident) =>
             incident.id === id ? { ...incident, ...data } : incident,
           ),
+        );
+      }
+
+      // Return a context object with the snapshotted value
+      return { previousIncidents };
+    },
+    onError: (_err, _variables, context) => {
+      // If the mutation fails, use the context returned from onMutate to roll back
+      if (context?.previousIncidents) {
+        queryClient.setQueryData(['incidents'], context.previousIncidents);
+      }
+    },
+    onSettled: () => {
+      // Always refetch after error or success
+      queryClient.invalidateQueries({ queryKey: ['incidents'] });
+    },
+  });
+}
+
+export function useDeleteIncident() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (id: string) => deleteIncident(id),
+    onMutate: async (id) => {
+      // Cancel any outgoing refetches
+      await queryClient.cancelQueries({ queryKey: ['incidents'] });
+
+      // Snapshot the previous value
+      const previousIncidents = queryClient.getQueryData<Incident[]>(['incidents']);
+
+      // Optimistically remove the incident
+      if (previousIncidents) {
+        queryClient.setQueryData<Incident[]>(
+          ['incidents'],
+          previousIncidents.filter((incident) => incident.id !== id)
         );
       }
 

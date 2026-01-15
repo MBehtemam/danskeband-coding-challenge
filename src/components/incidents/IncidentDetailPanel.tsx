@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
@@ -8,16 +9,57 @@ import { SeverityChip } from '../common/SeverityChip';
 import { StatusHistoryTimeline } from './StatusHistoryTimeline';
 import { StatusSelect } from './StatusSelect';
 import { AssigneeSelect } from './AssigneeSelect';
+import { useUpdateIncident } from '../../hooks/useIncidents';
+import { useUsers } from '../../hooks/useUsers';
 import { formatDateTime } from '../../utils/dateUtils';
-import type { Incident } from '../../api/types';
+import type { Incident, IncidentStatus } from '../../api/types';
 
 interface IncidentDetailPanelProps {
   incident: Incident;
 }
 
+/**
+ * DEPRECATED: This component uses auto-save pattern. Use IncidentDrawer with IncidentDetailForm instead,
+ * which implements the explicit save pattern with better UX.
+ *
+ * This component is kept for backward compatibility but should not be used in new code.
+ */
 export function IncidentDetailPanel({ incident }: IncidentDetailPanelProps) {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
+  // Local state to track current values (for optimistic updates)
+  const [currentStatus, setCurrentStatus] = useState(incident.status);
+  const [currentAssigneeId, setCurrentAssigneeId] = useState(incident.assigneeId);
+
+  const updateIncident = useUpdateIncident();
+  const { data: users } = useUsers();
+
+  const handleStatusChange = (newStatus: IncidentStatus) => {
+    setCurrentStatus(newStatus);
+    updateIncident.mutate(
+      { id: incident.id, data: { status: newStatus } },
+      {
+        onError: () => {
+          // Revert on error
+          setCurrentStatus(incident.status);
+        },
+      }
+    );
+  };
+
+  const handleAssigneeChange = (newAssigneeId: string | null) => {
+    setCurrentAssigneeId(newAssigneeId);
+    updateIncident.mutate(
+      { id: incident.id, data: { assigneeId: newAssigneeId } },
+      {
+        onError: () => {
+          // Revert on error
+          setCurrentAssigneeId(incident.assigneeId);
+        },
+      }
+    );
+  };
 
   return (
     <Paper
@@ -61,8 +103,9 @@ export function IncidentDetailPanel({ incident }: IncidentDetailPanelProps) {
                 Status
               </Typography>
               <StatusSelect
-                incidentId={incident.id}
-                currentStatus={incident.status}
+                value={currentStatus}
+                onChange={handleStatusChange}
+                disabled={updateIncident.isPending}
               />
             </Box>
             <Box sx={{ width: isMobile ? '100%' : 'auto', minHeight: 44, display: 'flex', alignItems: 'center' }}>
@@ -78,8 +121,10 @@ export function IncidentDetailPanel({ incident }: IncidentDetailPanelProps) {
                 Assignee
               </Typography>
               <AssigneeSelect
-                incidentId={incident.id}
-                currentAssigneeId={incident.assigneeId}
+                value={currentAssigneeId}
+                onChange={handleAssigneeChange}
+                users={users || []}
+                disabled={updateIncident.isPending}
               />
             </Box>
           </Box>

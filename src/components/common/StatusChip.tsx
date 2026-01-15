@@ -1,7 +1,7 @@
 import Chip from '@mui/material/Chip';
-import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
-import PlayArrowIcon from '@mui/icons-material/PlayArrow';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import HourglassEmptyOutlinedIcon from '@mui/icons-material/HourglassEmptyOutlined';
+import AutorenewOutlinedIcon from '@mui/icons-material/AutorenewOutlined';
+import CheckIcon from '@mui/icons-material/Check';
 import type { SvgIconProps } from '@mui/material/SvgIcon';
 import type { IncidentStatus } from '../../api/types';
 import { statusColors } from '../../theme';
@@ -22,26 +22,25 @@ interface StatusConfig {
 
 /**
  * Status configuration map with Danske Bank brand colors and workflow icons.
- * Blue→Gold→Green progression represents workflow state.
  * Icons provide visual differentiation for color-blind users (FR-017).
  */
 export const STATUS_CONFIG: Record<IncidentStatus, StatusConfig> = {
   Open: {
     backgroundColor: statusColors.open.background,
     textColor: statusColors.open.text,
-    icon: RadioButtonUncheckedIcon,
+    icon: HourglassEmptyOutlinedIcon,
     label: 'Open',
   },
   'In Progress': {
     backgroundColor: statusColors.inProgress.background,
     textColor: statusColors.inProgress.text,
-    icon: PlayArrowIcon,
+    icon: AutorenewOutlinedIcon,
     label: 'In Progress',
   },
   Resolved: {
     backgroundColor: statusColors.resolved.background,
     textColor: statusColors.resolved.text,
-    icon: CheckCircleIcon,
+    icon: CheckIcon,
     label: 'Resolved',
   },
 };

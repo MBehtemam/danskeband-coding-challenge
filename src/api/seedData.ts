@@ -25,6 +25,7 @@ export const defaultIncidents: Incident[] = [
         changedBy: "user-2",
       },
     ],
+    isDummy: false,
   },
   {
     id: "inc-2",
@@ -48,6 +49,7 @@ export const defaultIncidents: Incident[] = [
         changedBy: "user-2",
       },
     ],
+    isDummy: false,
   },
   {
     id: "inc-3",
@@ -76,6 +78,7 @@ export const defaultIncidents: Incident[] = [
         changedBy: "user-3",
       },
     ],
+    isDummy: false,
   },
   {
     id: "inc-4",
@@ -94,5 +97,6 @@ export const defaultIncidents: Incident[] = [
         changedBy: "user-4",
       },
     ],
+    isDummy: false,
   },
 ];

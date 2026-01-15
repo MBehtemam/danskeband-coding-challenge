@@ -31,6 +31,7 @@ const mockIncident: Incident = {
   statusHistory: [
     { status: 'Open', changedAt: '2026-01-14T10:00:00Z', changedBy: 'user-1' },
   ],
+  isDummy: false,
 };
 
 const mockUsers: User[] = [

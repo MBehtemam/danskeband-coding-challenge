@@ -9,13 +9,19 @@ import {
   SHAPE_CONFIG,
   BUTTON_CONFIG,
   TABLE_TYPOGRAPHY,
+  DARK_MODE_COLORS,
+  DARK_STATUS_COLORS,
 } from './constants';
 
 // =============================================================================
-// DANSKE BANK MUI THEME
+// DANSKE BANK MUI THEMES (Light & Dark)
+// Feature: 009-theme-switcher
 // =============================================================================
 
-export const theme = createTheme({
+/**
+ * Light theme (default)
+ */
+export const lightTheme = createTheme({
   // ---------------------------------------------------------------------------
   // PALETTE (T006)
   // ---------------------------------------------------------------------------
@@ -129,6 +135,7 @@ export const theme = createTheme({
       styleOverrides: {
         body: {
           backgroundColor: BRAND_COLORS.background,
+          transition: 'background-color 300ms ease-in-out, color 300ms ease-in-out',
         },
       },
     },
@@ -142,6 +149,7 @@ export const theme = createTheme({
           backgroundColor: BRAND_COLORS.surface,
           color: BRAND_COLORS.primary,
           boxShadow: `0 1px 0 ${BORDER_COLORS.default}`,
+          transition: 'background-color 300ms ease-in-out, box-shadow 300ms ease-in-out',
         },
       },
     },
@@ -237,6 +245,7 @@ export const theme = createTheme({
       styleOverrides: {
         root: {
           backgroundImage: 'none',
+          transition: 'background-color 300ms ease-in-out',
         },
         outlined: {
           borderColor: BORDER_COLORS.default,
@@ -350,3 +359,203 @@ export const danskeBankColors = {
   status: STATUS_COLORS,
   severity: SEVERITY_COLORS,
 } as const;
+
+// =============================================================================
+// DARK THEME (Feature: 009-theme-switcher)
+// =============================================================================
+
+/**
+ * Dark theme variant
+ */
+export const darkTheme = createTheme({
+  palette: {
+    mode: 'dark',
+    primary: {
+      main: DARK_MODE_COLORS.primary,
+      dark: DARK_MODE_COLORS.primaryDark,
+      contrastText: '#FFFFFF',
+    },
+    secondary: {
+      main: DARK_MODE_COLORS.primary,
+      dark: DARK_MODE_COLORS.primaryDark,
+      contrastText: '#FFFFFF',
+    },
+    background: {
+      default: DARK_MODE_COLORS.background,
+      paper: DARK_MODE_COLORS.paper,
+    },
+    text: {
+      primary: DARK_MODE_COLORS.textPrimary,
+      secondary: DARK_MODE_COLORS.textSecondary,
+    },
+    divider: DARK_MODE_COLORS.divider,
+    error: {
+      main: SEVERITY_COLORS.critical.background,
+    },
+    warning: {
+      main: SEVERITY_COLORS.high.background,
+    },
+    info: {
+      main: DARK_STATUS_COLORS.open.background,
+    },
+    success: {
+      main: DARK_STATUS_COLORS.resolved.background,
+    },
+  },
+  typography: {
+    fontFamily: TYPOGRAPHY_CONFIG.fontFamily,
+    h1: {
+      fontSize: TYPOGRAPHY_CONFIG.h1.fontSize,
+      fontWeight: TYPOGRAPHY_CONFIG.h1.fontWeight,
+      lineHeight: TYPOGRAPHY_CONFIG.h1.lineHeight,
+      color: DARK_MODE_COLORS.textPrimary,
+    },
+    h2: {
+      fontSize: TYPOGRAPHY_CONFIG.h2.fontSize,
+      fontWeight: TYPOGRAPHY_CONFIG.h2.fontWeight,
+      lineHeight: TYPOGRAPHY_CONFIG.h2.lineHeight,
+      color: DARK_MODE_COLORS.textPrimary,
+    },
+    h3: {
+      fontSize: TYPOGRAPHY_CONFIG.h3.fontSize,
+      fontWeight: TYPOGRAPHY_CONFIG.h3.fontWeight,
+      lineHeight: TYPOGRAPHY_CONFIG.h3.lineHeight,
+      color: DARK_MODE_COLORS.textPrimary,
+    },
+    h4: {
+      fontSize: TYPOGRAPHY_CONFIG.h4.fontSize,
+      fontWeight: TYPOGRAPHY_CONFIG.h4.fontWeight,
+      lineHeight: TYPOGRAPHY_CONFIG.h4.lineHeight,
+      color: DARK_MODE_COLORS.textPrimary,
+    },
+    h5: {
+      fontSize: TYPOGRAPHY_CONFIG.h5.fontSize,
+      fontWeight: TYPOGRAPHY_CONFIG.h5.fontWeight,
+      lineHeight: TYPOGRAPHY_CONFIG.h5.lineHeight,
+      color: DARK_MODE_COLORS.textPrimary,
+    },
+    h6: {
+      fontSize: TYPOGRAPHY_CONFIG.h6.fontSize,
+      fontWeight: TYPOGRAPHY_CONFIG.h6.fontWeight,
+      lineHeight: TYPOGRAPHY_CONFIG.h6.lineHeight,
+      color: DARK_MODE_COLORS.textPrimary,
+    },
+    body1: {
+      fontSize: TYPOGRAPHY_CONFIG.body1.fontSize,
+      fontWeight: TYPOGRAPHY_CONFIG.body1.fontWeight,
+      lineHeight: TYPOGRAPHY_CONFIG.body1.lineHeight,
+    },
+    body2: {
+      fontSize: TYPOGRAPHY_CONFIG.body2.fontSize,
+      fontWeight: TYPOGRAPHY_CONFIG.body2.fontWeight,
+      lineHeight: TYPOGRAPHY_CONFIG.body2.lineHeight,
+    },
+    caption: {
+      fontSize: TYPOGRAPHY_CONFIG.caption.fontSize,
+      fontWeight: TYPOGRAPHY_CONFIG.caption.fontWeight,
+      lineHeight: TYPOGRAPHY_CONFIG.caption.lineHeight,
+    },
+  },
+  shape: {
+    borderRadius: SHAPE_CONFIG.borderRadiusSmall,
+  },
+  components: {
+    MuiCssBaseline: {
+      styleOverrides: {
+        body: {
+          backgroundColor: DARK_MODE_COLORS.background,
+          transition: 'background-color 300ms ease-in-out, color 300ms ease-in-out',
+        },
+      },
+    },
+    MuiAppBar: {
+      styleOverrides: {
+        root: {
+          backgroundColor: DARK_MODE_COLORS.surface,
+          color: DARK_MODE_COLORS.textPrimary,
+          boxShadow: `0 1px 0 ${DARK_MODE_COLORS.divider}`,
+          transition: 'background-color 300ms ease-in-out, box-shadow 300ms ease-in-out',
+        },
+      },
+    },
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          textTransform: 'none',
+          fontWeight: BUTTON_CONFIG.fontWeight,
+          fontSize: BUTTON_CONFIG.fontSize,
+          borderRadius: BUTTON_CONFIG.borderRadius,
+          minHeight: BUTTON_CONFIG.minHeight,
+          paddingLeft: BUTTON_CONFIG.paddingHorizontal,
+          paddingRight: BUTTON_CONFIG.paddingHorizontal,
+          boxShadow: 'none',
+          '&:hover': {
+            boxShadow: 'none',
+          },
+        },
+        containedPrimary: {
+          backgroundColor: DARK_MODE_COLORS.primaryButton,
+          '&:hover': {
+            backgroundColor: DARK_MODE_COLORS.primaryButtonHover,
+          },
+        },
+      },
+    },
+    MuiPaper: {
+      styleOverrides: {
+        root: {
+          backgroundImage: 'none',
+          transition: 'background-color 300ms ease-in-out',
+        },
+        outlined: {
+          borderColor: DARK_MODE_COLORS.divider,
+        },
+      },
+    },
+    MuiTableRow: {
+      styleOverrides: {
+        root: {
+          '&:hover': {
+            backgroundColor: 'rgba(255, 255, 255, 0.08)',
+          },
+          '&.Mui-selected': {
+            backgroundColor: 'rgba(0, 158, 220, 0.2)',
+            '&:hover': {
+              backgroundColor: 'rgba(0, 158, 220, 0.3)',
+            },
+          },
+        },
+      },
+    },
+    MuiTableCell: {
+      styleOverrides: {
+        root: {
+          fontSize: TABLE_TYPOGRAPHY.body.fontSize,
+          fontWeight: TABLE_TYPOGRAPHY.body.fontWeight,
+          lineHeight: 1.5,
+          borderBottomColor: DARK_MODE_COLORS.divider,
+        },
+        head: {
+          fontSize: TABLE_TYPOGRAPHY.header.fontSize,
+          fontWeight: TABLE_TYPOGRAPHY.header.fontWeight,
+          backgroundColor: DARK_MODE_COLORS.surface,
+        },
+      },
+    },
+    MuiCard: {
+      styleOverrides: {
+        root: {
+          border: `1px solid ${DARK_MODE_COLORS.divider}`,
+          borderRadius: SHAPE_CONFIG.borderRadiusMedium,
+          boxShadow: 'none',
+        },
+      },
+    },
+  },
+});
+
+/**
+ * Legacy export for backward compatibility
+ * @deprecated Use lightTheme or darkTheme instead
+ */
+export const theme = lightTheme;

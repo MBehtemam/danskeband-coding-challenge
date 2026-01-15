@@ -3,7 +3,10 @@ import { render, screen } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { BrowserRouter } from 'react-router-dom';
 import { ThemeProvider } from '@mui/material/styles';
-import { theme } from './theme';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { lightTheme } from './theme';
+import { ThemeContextProvider } from './contexts/ThemeContext';
 import App from './App';
 import * as useIncidentsHook from './hooks/useIncidents';
 import * as useUsersHook from './hooks/useUsers';
@@ -21,7 +24,13 @@ function renderWithProviders(ui: React.ReactElement) {
   return render(
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
-        <ThemeProvider theme={theme}>{ui}</ThemeProvider>
+        <ThemeContextProvider>
+          <ThemeProvider theme={lightTheme}>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              {ui}
+            </LocalizationProvider>
+          </ThemeProvider>
+        </ThemeContextProvider>
       </BrowserRouter>
     </QueryClientProvider>,
   );

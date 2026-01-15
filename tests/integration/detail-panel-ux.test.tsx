@@ -207,11 +207,11 @@ describe('Detail Panel UX Integration Tests', () => {
       await user.click(statusSelect);
 
       // Verify icons are present in the dropdown options
-      // Open: RadioButtonUnchecked, In Progress: PlayArrow, Resolved: CheckCircle
+      // Open: HourglassEmptyOutlined, In Progress: AutorenewOutlined, Resolved: Check
       // Use getAllByTestId since multiple chips may render the same icons
-      expect(screen.getAllByTestId('RadioButtonUncheckedIcon').length).toBeGreaterThan(0);
-      expect(screen.getAllByTestId('PlayArrowIcon').length).toBeGreaterThan(0);
-      expect(screen.getAllByTestId('CheckCircleIcon').length).toBeGreaterThan(0);
+      expect(screen.getAllByTestId('HourglassEmptyOutlinedIcon').length).toBeGreaterThan(0);
+      expect(screen.getAllByTestId('AutorenewOutlinedIcon').length).toBeGreaterThan(0);
+      expect(screen.getAllByTestId('CheckIcon').length).toBeGreaterThan(0);
     });
 
     it('status and severity have visually distinct colors', () => {

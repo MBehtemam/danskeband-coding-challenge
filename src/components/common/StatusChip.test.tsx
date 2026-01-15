@@ -44,18 +44,18 @@ describe('StatusChip', () => {
       expect(chip).toHaveStyle({ backgroundColor: 'rgb(70, 114, 194)' });
     });
 
-    // #d8b463 → rgb(216, 180, 99)
-    it('displays In Progress status with gold background (#d8b463)', () => {
+    // #bad7f5 → rgb(186, 215, 245)
+    it('displays In Progress status with light blue background (#bad7f5)', () => {
       render(<StatusChip status="In Progress" />);
       const chip = screen.getByText('In Progress').closest('.MuiChip-root');
-      expect(chip).toHaveStyle({ backgroundColor: 'rgb(216, 180, 99)' });
+      expect(chip).toHaveStyle({ backgroundColor: 'rgb(186, 215, 245)' });
     });
 
-    // #144a37 → rgb(20, 74, 55)
-    it('displays Resolved status with green background (#144a37)', () => {
+    // #ebece7 → rgb(235, 236, 231)
+    it('displays Resolved status with light gray background (#ebece7)', () => {
       render(<StatusChip status="Resolved" />);
       const chip = screen.getByText('Resolved').closest('.MuiChip-root');
-      expect(chip).toHaveStyle({ backgroundColor: 'rgb(20, 74, 55)' });
+      expect(chip).toHaveStyle({ backgroundColor: 'rgb(235, 236, 231)' });
     });
 
     it('displays white text color for Open status', () => {

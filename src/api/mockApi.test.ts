@@ -106,16 +106,40 @@ describe("Mock API", () => {
   });
 
   describe("DELETE /api/incidents/:id", () => {
-    it("deletes an incident", async () => {
-      const response = await fetch("/api/incidents/inc-1", {
+    it("deletes a dummy incident", async () => {
+      // First create a dummy incident
+      const createResponse = await fetch("/api/incidents", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          title: "Dummy Test Incident",
+          description: "Test description",
+          severity: "Medium",
+          assigneeId: null,
+          isDummy: true,
+        }),
+      });
+      const created: Incident = await createResponse.json();
+      expect(createResponse.status).toBe(201);
+
+      // Now delete the dummy incident
+      const response = await fetch(`/api/incidents/${created.id}`, {
         method: "DELETE",
       });
 
       expect(response.status).toBe(204);
 
       // Verify it's gone
-      const getResponse = await fetch("/api/incidents/inc-1");
+      const getResponse = await fetch(`/api/incidents/${created.id}`);
       expect(getResponse.status).toBe(404);
+    });
+
+    it("returns 403 when trying to delete a non-dummy incident", async () => {
+      const response = await fetch("/api/incidents/inc-1", {
+        method: "DELETE",
+      });
+
+      expect(response.status).toBe(403);
     });
 
     it("returns 404 for non-existent incident", async () => {
@@ -141,14 +165,32 @@ describe("Mock API", () => {
 
   describe("POST /api/reset", () => {
     it("resets data to defaults", async () => {
-      // Delete an incident
-      await fetch("/api/incidents/inc-1", { method: "DELETE" });
+      // Create a dummy incident
+      const createResponse = await fetch("/api/incidents", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          title: "Dummy Incident to Delete",
+          description: "Test",
+          severity: "Low",
+          assigneeId: null,
+          isDummy: true,
+        }),
+      });
+      const created: Incident = await createResponse.json();
+
+      // Delete the dummy incident
+      await fetch(`/api/incidents/${created.id}`, { method: "DELETE" });
+
+      // Verify dummy incident is gone
+      const getDeletedResponse = await fetch(`/api/incidents/${created.id}`);
+      expect(getDeletedResponse.status).toBe(404);
 
       // Reset
       const response = await fetch("/api/reset", { method: "POST" });
       expect(response.status).toBe(200);
 
-      // Verify incident is back
+      // Verify original incidents are still there
       const getResponse = await fetch("/api/incidents/inc-1");
       expect(getResponse.status).toBe(200);
     });

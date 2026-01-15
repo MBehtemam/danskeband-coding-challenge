@@ -1,0 +1,248 @@
+openapi: 3.0.3
+info:
+  title: Incident Dashboard API - Developer Settings Extension
+  description: API extensions for developer settings and enhanced table functionality
+  version: 1.0.0
+
+paths:
+  /api/incidents:
+    get:
+      summary: List all incidents
+      description: Retrieve all incidents. Supports client-side filtering, sorting, and pagination.
+      operationId: listIncidents
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Incident'
+
+    post:
+      summary: Create a new incident
+      description: Create a new incident. Set isDummy to true when creating via Developer Settings.
+      operationId: createIncident
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateIncidentInput'
+      responses:
+        '201':
+          description: Incident created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Incident'
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/incidents/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Incident ID
+
+    get:
+      summary: Get incident by ID
+      operationId: getIncident
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Incident'
+        '404':
+          description: Incident not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    patch:
+      summary: Update incident
+      operationId: updateIncident
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateIncidentInput'
+      responses:
+        '200':
+          description: Incident updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Incident'
+        '404':
+          description: Incident not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    delete:
+      summary: Delete incident (dummy only)
+      description: |
+        Delete an incident. Only incidents with isDummy=true can be deleted.
+        Returns 403 Forbidden if attempting to delete a non-dummy incident.
+      operationId: deleteIncident
+      responses:
+        '204':
+          description: Incident deleted successfully
+        '403':
+          description: Cannot delete non-dummy incident
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                error: "Cannot delete non-dummy incidents"
+        '404':
+          description: Incident not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+components:
+  schemas:
+    IncidentStatus:
+      type: string
+      enum:
+        - Open
+        - In Progress
+        - Resolved
+
+    IncidentSeverity:
+      type: string
+      enum:
+        - Low
+        - Medium
+        - High
+        - Critical
+
+    StatusHistoryEntry:
+      type: object
+      required:
+        - status
+        - changedAt
+        - changedBy
+      properties:
+        status:
+          $ref: '#/components/schemas/IncidentStatus'
+        changedAt:
+          type: string
+          format: date-time
+        changedBy:
+          type: string
+
+    Incident:
+      type: object
+      required:
+        - id
+        - title
+        - description
+        - status
+        - severity
+        - createdAt
+        - updatedAt
+        - statusHistory
+        - isDummy
+      properties:
+        id:
+          type: string
+          description: Unique incident identifier
+          example: "inc-1705123456789-abc123"
+        title:
+          type: string
+          description: Incident title
+          example: "Database connection timeout"
+        description:
+          type: string
+          description: Detailed incident description
+        status:
+          $ref: '#/components/schemas/IncidentStatus'
+        severity:
+          $ref: '#/components/schemas/IncidentSeverity'
+        assigneeId:
+          type: string
+          nullable: true
+          description: ID of assigned user, or null if unassigned
+        createdAt:
+          type: string
+          format: date-time
+          description: ISO 8601 creation timestamp
+        updatedAt:
+          type: string
+          format: date-time
+          description: ISO 8601 last update timestamp
+        statusHistory:
+          type: array
+          items:
+            $ref: '#/components/schemas/StatusHistoryEntry'
+        isDummy:
+          type: boolean
+          description: True if created via Developer Settings
+          default: false
+
+    CreateIncidentInput:
+      type: object
+      required:
+        - title
+        - description
+        - severity
+      properties:
+        title:
+          type: string
+          minLength: 1
+          maxLength: 200
+        description:
+          type: string
+        severity:
+          $ref: '#/components/schemas/IncidentSeverity'
+        assigneeId:
+          type: string
+          nullable: true
+        isDummy:
+          type: boolean
+          description: Set to true when creating via Developer Settings
+          default: false
+
+    UpdateIncidentInput:
+      type: object
+      properties:
+        title:
+          type: string
+          minLength: 1
+          maxLength: 200
+        description:
+          type: string
+        status:
+          $ref: '#/components/schemas/IncidentStatus'
+        severity:
+          $ref: '#/components/schemas/IncidentSeverity'
+        assigneeId:
+          type: string
+          nullable: true
+
+    Error:
+      type: object
+      required:
+        - error
+      properties:
+        error:
+          type: string
+          description: Human-readable error message

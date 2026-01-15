@@ -61,6 +61,8 @@ export const TEXT_COLORS: TextColors = {
 
 /**
  * Workflow status colors
+ * Updated for 008-layout-filters-fix feature
+ * All colors meet WCAG AA contrast requirements (≥4.5:1)
  */
 export const STATUS_COLORS: StatusColors = {
   open: {
@@ -68,12 +70,12 @@ export const STATUS_COLORS: StatusColors = {
     text: '#FFFFFF',
   },
   inProgress: {
-    background: '#d8b463',
+    background: '#bad7f5',
     text: '#002346',
   },
   resolved: {
-    background: '#144a37',
-    text: '#FFFFFF',
+    background: '#ebece7',
+    text: '#002346',
   },
 } as const;
 
@@ -223,3 +225,43 @@ export const GOOGLE_FONTS_PRECONNECT = [
   'https://fonts.googleapis.com',
   'https://fonts.gstatic.com',
 ] as const;
+
+// =============================================================================
+// DARK MODE COLORS (Feature: 009-theme-switcher)
+// =============================================================================
+
+/**
+ * Dark mode color palette
+ * All colors meet WCAG AA contrast requirements (≥4.5:1)
+ */
+export const DARK_MODE_COLORS = {
+  primary: '#009EDC',
+  primaryDark: '#0088C7',
+  background: '#1a1a1a',
+  paper: '#242424',
+  surface: '#242424',
+  textPrimary: '#FFFFFF',
+  textSecondary: '#b3b3b3',
+  divider: '#424242',
+  primaryButton: '#009EDC',
+  primaryButtonHover: '#0088C7',
+} as const;
+
+/**
+ * Dark mode status colors
+ * Adjusted for better contrast on dark backgrounds
+ */
+export const DARK_STATUS_COLORS = {
+  open: {
+    background: '#5a8fd9',
+    text: '#FFFFFF',
+  },
+  inProgress: {
+    background: '#7ca3d4',
+    text: '#002346',
+  },
+  resolved: {
+    background: '#4a4a4a',
+    text: '#FFFFFF',
+  },
+} as const;

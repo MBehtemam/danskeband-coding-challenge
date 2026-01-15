@@ -23,6 +23,8 @@ export interface Incident {
   createdAt: string;
   updatedAt: string;
   statusHistory: StatusHistoryEntry[];
+  /** True if created via Developer Settings (dummy/test incident) */
+  isDummy: boolean;
 }
 
 export interface CreateIncidentInput {
@@ -30,6 +32,8 @@ export interface CreateIncidentInput {
   description: string;
   severity: IncidentSeverity;
   assigneeId: string | null;
+  /** Optional: set to true when creating dummy/test incidents */
+  isDummy?: boolean;
 }
 
 export interface UpdateIncidentInput {
@@ -39,3 +43,15 @@ export interface UpdateIncidentInput {
   severity?: IncidentSeverity;
   assigneeId?: string | null;
 }
+
+/**
+ * Re-export saved views types for convenience
+ */
+export type {
+  SavedView,
+  ViewConfig,
+  StorageStatus,
+  SavedViewsState,
+  SavedViewsContextValue,
+  ValidationResult
+} from '../types/savedViews';

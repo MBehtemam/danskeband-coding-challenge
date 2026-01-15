@@ -1,60 +1,56 @@
-import { useState, useCallback } from 'react';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import Select, { type SelectChangeEvent } from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
-import { useUpdateIncident } from '../../hooks/useIncidents';
+import { StatusChip } from '../common/StatusChip';
 import type { IncidentStatus } from '../../api/types';
 
-const STATUSES: IncidentStatus[] = ['Open', 'In Progress', 'Resolved'];
+/**
+ * Available status values for the dropdown.
+ * Order: Open → In Progress → Resolved (workflow progression)
+ */
+export const STATUS_OPTIONS: readonly IncidentStatus[] = [
+  'Open',
+  'In Progress',
+  'Resolved',
+] as const;
 
 interface StatusSelectProps {
-  incidentId: string;
-  currentStatus: IncidentStatus;
-  onSuccess?: () => void;
+  /** Current status value */
+  value: IncidentStatus;
+
+  /** Callback when status changes */
+  onChange: (status: IncidentStatus) => void;
+
+  /** Whether the select is disabled (e.g., during save) */
+  disabled?: boolean;
+
+  /** Whether the select should take full width of its container */
+  fullWidth?: boolean;
 }
 
-export function StatusSelect({ incidentId, currentStatus, onSuccess }: StatusSelectProps) {
-  const [status, setStatus] = useState<IncidentStatus>(currentStatus);
-  const updateIncident = useUpdateIncident();
-
-  const handleChange = useCallback(
-    (event: SelectChangeEvent) => {
-      const newStatus = event.target.value as IncidentStatus;
-      setStatus(newStatus);
-
-      updateIncident.mutate(
-        { id: incidentId, data: { status: newStatus } },
-        {
-          onSuccess: () => {
-            onSuccess?.();
-          },
-          onError: () => {
-            // Revert on error
-            setStatus(currentStatus);
-          },
-        },
-      );
-    },
-    [incidentId, currentStatus, updateIncident, onSuccess],
-  );
+export function StatusSelect({ value, onChange, disabled, fullWidth = false }: StatusSelectProps) {
+  const handleChange = (event: SelectChangeEvent) => {
+    onChange(event.target.value as IncidentStatus);
+  };
 
   return (
-    <FormControl size="small" sx={{ minWidth: 140 }}>
-      <InputLabel id={`status-select-label-${incidentId}`}>Status</InputLabel>
+    <FormControl size="small" fullWidth={fullWidth} sx={{ minWidth: fullWidth ? undefined : 140 }}>
+      <InputLabel id="status-select-label">Status</InputLabel>
       <Select
-        labelId={`status-select-label-${incidentId}`}
-        id={`status-select-${incidentId}`}
-        value={status}
+        labelId="status-select-label"
+        id="status-select"
+        value={value}
         label="Status"
         onChange={handleChange}
-        disabled={updateIncident.isPending}
-        aria-label="Change incident status"
+        disabled={disabled}
+        aria-label="Status"
         sx={{ minHeight: 44 }}
+        renderValue={(selected) => <StatusChip status={selected as IncidentStatus} size="small" />}
       >
-        {STATUSES.map((s) => (
+        {STATUS_OPTIONS.map((s) => (
           <MenuItem key={s} value={s} sx={{ minHeight: 44 }}>
-            {s}
+            <StatusChip status={s} size="small" />
           </MenuItem>
         ))}
       </Select>

@@ -1,0 +1,41 @@
+# Development files
+node_modules/
+src/
+tests/
+specs/
+
+# Configuration files
+.git/
+.github/
+.vscode/
+.idea/
+.DS_Store
+
+# Test and coverage
+coverage/
+*.test.ts
+*.test.tsx
+
+# Build artifacts (Vercel will build on their end)
+dist/
+build/
+
+# Logs and temp files
+*.log
+*.tmp
+*.swp
+
+# Environment files
+.env*
+!.env.example
+
+# Documentation
+README.md
+CLAUDE.md
+
+# Editor files
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?

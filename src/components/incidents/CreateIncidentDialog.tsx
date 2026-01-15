@@ -5,19 +5,15 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
-import FormControl from '@mui/material/FormControl';
-import InputLabel from '@mui/material/InputLabel';
-import Select, { type SelectChangeEvent } from '@mui/material/Select';
-import MenuItem from '@mui/material/MenuItem';
 import Box from '@mui/material/Box';
 import Alert from '@mui/material/Alert';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
+import { SeveritySelect } from './SeveritySelect';
+import { AssigneeSelect } from './AssigneeSelect';
 import { useCreateIncident } from '../../hooks/useIncidents';
 import { useUsers } from '../../hooks/useUsers';
 import type { IncidentSeverity, CreateIncidentInput } from '../../api/types';
-
-const SEVERITIES: IncidentSeverity[] = ['Critical', 'High', 'Medium', 'Low'];
 
 interface CreateIncidentDialogProps {
   open: boolean;
@@ -28,7 +24,7 @@ export function CreateIncidentDialog({ open, onClose }: CreateIncidentDialogProp
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [severity, setSeverity] = useState<IncidentSeverity>('Medium');
-  const [assigneeId, setAssigneeId] = useState<string>('');
+  const [assigneeId, setAssigneeId] = useState<string | null>(null);
   const [errors, setErrors] = useState<{ title?: string; description?: string }>({});
 
   const theme = useTheme();
@@ -58,7 +54,7 @@ export function CreateIncidentDialog({ open, onClose }: CreateIncidentDialogProp
       title: title.trim(),
       description: description.trim(),
       severity,
-      assigneeId: assigneeId || null,
+      assigneeId,
     };
 
     createIncident.mutate(input, {
@@ -67,7 +63,7 @@ export function CreateIncidentDialog({ open, onClose }: CreateIncidentDialogProp
         setTitle('');
         setDescription('');
         setSeverity('Medium');
-        setAssigneeId('');
+        setAssigneeId(null);
         setErrors({});
         onClose();
       },
@@ -79,7 +75,7 @@ export function CreateIncidentDialog({ open, onClose }: CreateIncidentDialogProp
       setTitle('');
       setDescription('');
       setSeverity('Medium');
-      setAssigneeId('');
+      setAssigneeId(null);
       setErrors({});
       onClose();
     }
@@ -97,9 +93,10 @@ export function CreateIncidentDialog({ open, onClose }: CreateIncidentDialogProp
       <DialogTitle id="create-incident-dialog-title">Create New Incident</DialogTitle>
       <DialogContent>
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, pt: 1 }}>
+          {/* Error Alert - Top of dialog content */}
           {createIncident.isError && (
-            <Alert severity="error">
-              Failed to create incident. Please try again.
+            <Alert severity="error" sx={{ mb: 2 }} role="alert">
+              {createIncident.error?.message || 'Failed to create incident. Please try again.'}
             </Alert>
           )}
 
@@ -127,44 +124,22 @@ export function CreateIncidentDialog({ open, onClose }: CreateIncidentDialogProp
             inputProps={{ maxLength: 2000, 'aria-label': 'Incident description' }}
           />
 
-          <FormControl fullWidth>
-            <InputLabel id="severity-select-label">Severity</InputLabel>
-            <Select
-              labelId="severity-select-label"
-              value={severity}
-              label="Severity"
-              onChange={(e: SelectChangeEvent) =>
-                setSeverity(e.target.value as IncidentSeverity)
-              }
-              aria-label="Select incident severity"
-            >
-              {SEVERITIES.map((s) => (
-                <MenuItem key={s} value={s}>
-                  {s}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
+          {/* Severity Select - Using refactored component */}
+          <SeveritySelect
+            value={severity}
+            onChange={setSeverity}
+            disabled={createIncident.isPending}
+            fullWidth
+          />
 
-          <FormControl fullWidth>
-            <InputLabel id="assignee-select-label">Assignee (Optional)</InputLabel>
-            <Select
-              labelId="assignee-select-label"
-              value={assigneeId}
-              label="Assignee (Optional)"
-              onChange={(e: SelectChangeEvent) => setAssigneeId(e.target.value)}
-              aria-label="Select incident assignee"
-            >
-              <MenuItem value="">
-                <em>Unassigned</em>
-              </MenuItem>
-              {users?.map((user) => (
-                <MenuItem key={user.id} value={user.id}>
-                  {user.name}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
+          {/* Assignee Select - Using refactored component */}
+          <AssigneeSelect
+            value={assigneeId}
+            onChange={setAssigneeId}
+            users={users || []}
+            disabled={createIncident.isPending}
+            fullWidth
+          />
         </Box>
       </DialogContent>
       <DialogActions>

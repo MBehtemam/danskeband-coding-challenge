@@ -100,6 +100,7 @@ const routes: Route[] = [
             changedBy: "current-user",
           },
         ],
+        isDummy: input.isDummy ?? false,
       };
 
       const incidents = getIncidents();
@@ -165,6 +166,13 @@ const routes: Route[] = [
 
       if (index === -1) {
         return errorResponse(`Incident with id "${params.id}" not found`, 404);
+      }
+
+      const incident = incidents[index];
+
+      // Only allow deletion of dummy incidents
+      if (!incident.isDummy) {
+        return errorResponse("Cannot delete non-dummy incidents", 403);
       }
 
       incidents.splice(index, 1);

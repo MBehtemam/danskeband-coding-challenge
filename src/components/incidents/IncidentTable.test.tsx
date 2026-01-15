@@ -3,8 +3,11 @@ import { render, screen } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { BrowserRouter } from 'react-router-dom';
 import { ThemeProvider } from '@mui/material/styles';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { theme } from '../../theme';
 import { IncidentTable } from './IncidentTable';
+import { SavedViewsProvider } from '../../contexts/SavedViewsContext';
 import * as useIncidentsHook from '../../hooks/useIncidents';
 import * as useUsersHook from '../../hooks/useUsers';
 import type { Incident, User } from '../../api/types';
@@ -25,6 +28,7 @@ const mockIncidents: Incident[] = [
     statusHistory: [
       { status: 'Open', changedAt: '2026-01-14T10:00:00Z', changedBy: 'user-2' },
     ],
+    isDummy: false,
   },
   {
     id: 'inc-2',
@@ -39,6 +43,7 @@ const mockIncidents: Incident[] = [
       { status: 'Open', changedAt: '2026-01-13T09:00:00Z', changedBy: 'user-1' },
       { status: 'In Progress', changedAt: '2026-01-13T11:00:00Z', changedBy: 'user-2' },
     ],
+    isDummy: false,
   },
   {
     id: 'inc-3',
@@ -53,6 +58,7 @@ const mockIncidents: Incident[] = [
       { status: 'Open', changedAt: '2026-01-12T08:00:00Z', changedBy: 'user-3' },
       { status: 'Resolved', changedAt: '2026-01-12T16:00:00Z', changedBy: 'user-3' },
     ],
+    isDummy: false,
   },
 ];
 
@@ -72,7 +78,13 @@ function renderWithProviders(ui: React.ReactElement) {
   return render(
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
-        <ThemeProvider theme={theme}>{ui}</ThemeProvider>
+        <ThemeProvider theme={theme}>
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <SavedViewsProvider>
+              {ui}
+            </SavedViewsProvider>
+          </LocalizationProvider>
+        </ThemeProvider>
       </BrowserRouter>
     </QueryClientProvider>,
   );
